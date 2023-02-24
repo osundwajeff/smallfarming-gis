@@ -127,7 +127,7 @@ INSERT INTO water_lines (
     now(),
     'db-init',
     '{ca3f82ce-d8bf-4ac4-9727-270179976667}',
-    '{25c807a1-be4e-4c46-89d6-c4bcda470840}',
+    '{c1803802-0d65-416c-98cd-b691efc7e164}',
     '{71646565-a4d8-47eb-8531-4e61341573da}'
 );
 
