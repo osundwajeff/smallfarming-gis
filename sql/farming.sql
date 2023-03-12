@@ -67,7 +67,6 @@ CREATE TABLE infrastructure_management_log(
     CONSTRAINT unique_infrastructure_management_log UNIQUE (uuid),
     infrastructure_item_uuid UUID NOT NULL REFERENCES infrastructure_item(uuid),
     infrastructure_log_action_uuid UUID NOT NULL REFERENCES infrastructure_log_action (uuid)
-
 ) INHERITS (user_update);
 COMMENT ON TABLE infrastructure_management_log IS 'Store information on the process of task that needs to be done on an infrastructure item. ';
 COMMENT ON COLUMN infrastructure_management_log.id is 'The unique managment log ID. Primary Key. ';
@@ -140,7 +139,6 @@ CREATE TABLE water_source(
 -- 	Constraints are not carried when doing inheritance, as such they should be specified.
 	CONSTRAINT water_source_key UNIQUE(uuid) 
 ) INHERITS(user_update);
-
 COMMENT ON TABLE water_source IS 'Stores information regarding water bodies that provide drinking water.';
 COMMENT ON COLUMN water_source.id is 'The unique water source ID. This is the Primary Key.';
 COMMENT ON COLUMN water_source.name is 'The water source name, e.g. river, lake, ground water.';
@@ -152,8 +150,7 @@ CREATE TABLE water_polygon_type(
 	name TEXT NOT NULL,
 	CONSTRAINT unique_polygon_type_key UNIQUE(uuid)
 ) INHERITS (user_update);
-COMMENT ON TABLE water_polygon_type IS 
-'Lookup table of the type of water polygon.';
+COMMENT ON TABLE water_polygon_type IS 'Lookup table of the type of water polygon.';
 COMMENT ON COLUMN water_polygon_type.id is 'The unique water polygon ID. Primary Key.';
 COMMENT ON COLUMN water_polygon_type.name is 'The water polygon type name, e.g. delta, swamp, reservoir.';
 
@@ -246,7 +243,6 @@ CREATE TABLE water_line(
 	water_source_uuid UUID NOT NULL REFERENCES water_source(uuid),
 	water_line_type_uuid UUID NOT NULL REFERENCES water_line_type(uuid)
 ) INHERITS (user_update);
-
 COMMENT ON TABLE water_line is 'This is the path the water lines follow.';
 COMMENT ON COLUMN water_line.id is 'The unique water line ID. Primary Key.';
 COMMENT ON COLUMN water_line.name is 'The unique water line name.';
@@ -254,4 +250,6 @@ COMMENT ON COLUMN water_line.notes is 'Any additional information about the wate
 COMMENT ON COLUMN water_line.estimated_depth_m is 'The approximate depth of the water line in meters.';
 COMMENT ON COLUMN water_line.image is 'The link to an image of a water line, if possible.';
 COMMENT ON COLUMN water_line.geometry is 'The location of the water line. Follows EPSG: 4326';
+
+-- ----------------------------------
 
