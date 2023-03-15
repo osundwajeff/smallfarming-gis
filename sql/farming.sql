@@ -25,7 +25,7 @@ COMMENT ON COLUMN infrastructure_type.last_update_by is 'The name of the user re
 COMMENT ON COLUMN infrastructure_type.name is 'The infrastructure type name.';
 COMMENT ON COLUMN infrastructure_type.notes is 'Additional information of the infrastructure type.';
 COMMENT ON COLUMN infrastructure_type.image is 'Image of the infrastructure type.';
-COMMENT ON COLUMN infrastructure_type.sort_order is 'Defines the pattern of how infrastructure type are to be sorted.';
+COMMENT ON COLUMN infrastructure_type.sort_order is 'Defines the pattern of how infrastructure type records are to be sorted.';
 
 
 -- INFRASTRUCTURE ITEM
@@ -49,7 +49,7 @@ COMMENT ON COLUMN infrastructure_item.last_update_by is 'The name of the user re
 COMMENT ON COLUMN infrastructure_item.name is 'The name of the infrastructure item.';
 COMMENT ON COLUMN infrastructure_item.notes is 'Additional information of the infrastructure item.';
 COMMENT ON COLUMN infrastructure_item.image is 'Image of the infrastructure item.';
-COMMENT ON COLUMN infrastructure_item.sort_order is 'Defines the pattern of how infrastructure items are to be sorted.';
+COMMENT ON COLUMN infrastructure_item.sort_order is 'Defines the pattern of how infrastructure item records are to be sorted.';
 COMMENT ON COLUMN infrastructure_item.geometry is 'The centroid location of the infrastructure item. Follows EPSG: 4326.';
 
 
@@ -62,7 +62,7 @@ CREATE TABLE infrastructure_log_action(
         name TEXT UNIQUE NOT NULL, 
 		notes TEXT, 
 		image TEXT,
-        sort_order INT UNIQUE,
+        sort_order INT UNIQUE
 );
 COMMENT ON TABLE infrastructure_log_action IS 'Infrastructure log action refers to the actions taken to maintain infrastructure items, e.g. Screwing, Painting, Welding.';
 COMMENT ON COLUMN infrastructure_log_action.id is 'The unique log action ID. Primary Key.';
@@ -72,7 +72,7 @@ COMMENT ON COLUMN infrastructure_log_action.last_update_by is 'The name of the u
 COMMENT ON COLUMN infrastructure_log_action.name is 'The name of the action taken.';
 COMMENT ON COLUMN infrastructure_log_action.notes is 'Additional information of the action taken.';
 COMMENT ON COLUMN infrastructure_log_action.image is 'Image of the action taken.';
-COMMENT ON COLUMN infrastructure_log_action.sort_order is 'Defines the pattern of how actions are to be sorted.';
+COMMENT ON COLUMN infrastructure_log_action.sort_order is 'Defines the pattern of how log action records are to be sorted.';
 
 
 -- INFRASTRUCTURE MANAGEMENT LOG 
@@ -97,7 +97,7 @@ COMMENT ON COLUMN infrastructure_management_log.last_update_by is 'The name of t
 COMMENT ON COLUMN infrastructure_management_log.name is 'The name of the process.';
 COMMENT ON COLUMN infrastructure_management_log.notes is 'Additional information of the process.';
 COMMENT ON COLUMN infrastructure_management_log.image is 'Image of the work flow.';
-COMMENT ON COLUMN infrastructure_management_log.sort_order is 'Defines the pattern of processes are to be sorted.';
+COMMENT ON COLUMN infrastructure_management_log.sort_order is 'Defines the pattern of how process records are to be sorted.';
 COMMENT ON COLUMN infrastructure_management_log.condition is 'Circumstances or factors affecting the infrastructure item type.';
 
 
@@ -126,9 +126,9 @@ COMMENT ON COLUMN electricity_line_type.last_update_by is 'The name of the user 
 COMMENT ON COLUMN electricity_line_type.name is 'The name of the electricity line type.';
 COMMENT ON COLUMN electricity_line_type.notes is 'Additional information of the electricity line type.';
 COMMENT ON COLUMN electricity_line_type.image is 'Image of the electricity line type';
-COMMENT ON COLUMN electricity_line_type.sort_order is 'Defines the pattern of how electricity line types are to be sorted.';
-COMMENT ON COLUMN electricity_line_type.current_a is 'The electricity line current.';
-COMMENT ON COLUMN electricity_line_type.voltage_v is 'The electricity line voltage.';
+COMMENT ON COLUMN electricity_line_type.sort_order is 'Defines the pattern of how electricity line type records are to be sorted.';
+COMMENT ON COLUMN electricity_line_type.current_a is 'The electricity line current measured in ampere.';
+COMMENT ON COLUMN electricity_line_type.voltage_v is 'The electricity line voltage measured in volt.';
 
 
 -- ELECTRICITY LINE
@@ -152,7 +152,7 @@ COMMENT ON COLUMN electricity_line.last_update_by is 'The name of the user respo
 COMMENT ON COLUMN electricity_line.name is 'The name of the electricity line.';
 COMMENT ON COLUMN electricity_line.notes is 'Additional information of the electricity line.';
 COMMENT ON COLUMN electricity_line.image is 'Image of the electricity line';
-COMMENT ON COLUMN electricity_line.sort_order is 'Defines the pattern of how electricity lines are to be sorted.';
+COMMENT ON COLUMN electricity_line.sort_order is 'Defines the pattern of how electricity line records are to be sorted.';
 COMMENT ON COLUMN electricity_line.geometry is 'The location of the electricity line. Follows EPSG: 4326.';
 
 
@@ -171,11 +171,11 @@ COMMENT ON TABLE electricity_line_condition_type IS 'Look up table for the types
 COMMENT ON COLUMN electricity_line_condition_type.id is 'The unique electricity line condition ID. Primary key.';
 COMMENT ON COLUMN electricity_line_condition_type.uuid is 'The unique user ID.';
 COMMENT ON COLUMN electricity_line_condition_type.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
-COMMENT ON COLUMN electricity_line_condition-type.last_update_by is 'The name of the user responsible for the latest update.';
+COMMENT ON COLUMN electricity_line_condition_type.last_update_by is 'The name of the user responsible for the latest update.';
 COMMENT ON COLUMN electricity_line_condition_type.name is 'The name of the electricity line condition.';
 COMMENT ON COLUMN electricity_line_condition_type.notes is 'Additional information of the electricity line condition.';
 COMMENT ON COLUMN electricity_line_condition_type.image is 'Image of the electricity line condition.';
-COMMENT ON COLUMN electricity_line_condition_type.sort_order is 'Defines the pattern of how  electricity line conditions are to be sorted.';
+COMMENT ON COLUMN electricity_line_condition_type.sort_order is 'Defines the pattern of how  electricity line condition records are to be sorted.';
 
 
 -- ASSOCIATION TABLES
@@ -190,13 +190,13 @@ CREATE TABLE electricity_line_conditions (
         sort_order INT UNIQUE,
 		date DATE NOT NULL,
 		electricity_line_uuid UUID NOT NULL REFERENCES electricity_line(uuid),
-		electricity_line_condition_uuid UUID NOT NULL REFERENCES electricity_line_condition(uuid),
+		electricity_line_condition_uuid UUID NOT NULL REFERENCES electricity_line_condition_type(uuid),
 		-- Composite primary key
 		PRIMARY KEY (electricity_line_uuid, electricity_line_condition_uuid, date),
 		-- Unique together
 		UNIQUE(electricity_line_uuid, electricity_line_condition_uuid, date)
 );
-COMMENT ON TABLE electricity_line_conditions IS 'Associative table which stores the electricity line and condition.';
+COMMENT ON TABLE electricity_line_conditions IS 'Associative table which stores the electricity line and its condition on a particular day.';
 COMMENT ON COLUMN electricity_line_conditions.uuid is 'The unique user ID.';
 COMMENT ON COLUMN electricity_line_conditions.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN electricity_line_conditions.last_update_by is 'The name of the user responsible for the latest update.';
@@ -219,7 +219,7 @@ CREATE TABLE water_source(
 		image TEXT,
         sort_order INT UNIQUE
 );
-COMMENT ON TABLE water_source IS 'Water source refers to the geolocated water bodies that provide drinking water, e.g. --insert example--.';
+COMMENT ON TABLE water_source IS 'Water source refers to the geolocated water bodies that provide drinking water, e.g. Aquifer.';
 COMMENT ON COLUMN water_source.id is 'The unique water source ID. This is the Primary Key.';
 COMMENT ON COLUMN water_source.uuid is 'The unique user ID.';
 COMMENT ON COLUMN water_source.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
@@ -227,7 +227,7 @@ COMMENT ON COLUMN water_source.last_update_by is 'The name of the user responsib
 COMMENT ON COLUMN water_source.name is 'The name of the water source.';
 COMMENT ON COLUMN water_source.notes is 'Additional information of the water body.';
 COMMENT ON COLUMN water_source.image is 'Image of the water body.';
-COMMENT ON COLUMN water_source.sort_order is 'Defines the pattern of how water sources are to be sorted.';
+COMMENT ON COLUMN water_source.sort_order is 'Defines the pattern of how water source records are to be sorted.';
 
 
 
@@ -242,7 +242,7 @@ CREATE TABLE water_polygon_type(
 		image TEXT,
         sort_order INT UNIQUE
 );
-COMMENT ON TABLE water_polygon_type IS 'Lookup table of the type of water polygon.';
+COMMENT ON TABLE water_polygon_type IS 'Lookup table of the type of water polygon, e.g. Lake.';
 COMMENT ON COLUMN water_polygon_type.id is 'The unique water polygon ID. Primary Key.';
 COMMENT ON COLUMN water_polygon_type.uuid is 'The unique user ID.';
 COMMENT ON COLUMN water_polygon_type.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
@@ -250,7 +250,7 @@ COMMENT ON COLUMN water_polygon_type.last_update_by is 'The name of the user res
 COMMENT ON COLUMN water_polygon_type.name is 'The name of the water polygon type.';
 COMMENT ON COLUMN water_polygon_type.notes is 'Additional information of the water polygon type.';
 COMMENT ON COLUMN water_polygon_type.image is 'Image of the water polygon type.';
-COMMENT ON COLUMN water_polygon_type.sort_order is 'Defines the pattern of how water polygon types are to be sorted.';
+COMMENT ON COLUMN water_polygon_type.sort_order is 'Defines the pattern of how water polygon type records are to be sorted.';
 
 
 -- WATER POLYGON
@@ -271,7 +271,7 @@ CREATE TABLE water_polygon(
 		water_source_uuid UUID NOT NULL REFERENCES water_source(uuid),
 		water_polygon_type_uuid UUID NOT NULL REFERENCES water_polygon_type(uuid)
 );
-COMMENT ON TABLE water_polygon IS 'Water polygon refers to the geolocated land areas that are covered in water, either intermittently or constantly, e.g. --insert example--.';
+COMMENT ON TABLE water_polygon IS 'Water polygon refers to the geolocated land areas that are covered in water, either intermittently or constantly, e.g. River.';
 COMMENT ON COLUMN water_polygon.id is 'The unique water polygon ID. Primary Key.';
 COMMENT ON COLUMN water_polygon.uuid is 'The unique user ID.';
 COMMENT ON COLUMN water_polygon.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
@@ -280,7 +280,7 @@ COMMENT ON COLUMN water_polygon.name is 'The name of the water polygon.';
 COMMENT ON COLUMN water_polygon.notes is 'Additional information of the water polygon.';
 COMMENT ON COLUMN water_polygon.image is 'Image of the water polygon.';
 COMMENT ON COLUMN water_polygon.sort_order is 'Defines the pattern of how  water polygons are to be sorted.';
-COMMENT ON COLUMN water_polygon.estimated_depth_m is 'The approximate depth of the water polygon in meters.';
+COMMENT ON COLUMN water_polygon.estimated_depth_m is 'The approximate depth of the water polygon measured in meters.';
 COMMENT ON COLUMN water_polygon.geometry is 'The location of the water polygon. Follows EPSG: 4326.';
 
 
@@ -293,9 +293,9 @@ CREATE TABLE water_point_type (
         name TEXT UNIQUE NOT NULL, 
 		notes TEXT, 
 		image TEXT,
-        sort_order INT UNIQUE,
+        sort_order INT UNIQUE
 );
-COMMENT ON TABLE water_point_type is 'Lookup table on the types of water points, e.g. --insert example--.';
+COMMENT ON TABLE water_point_type is 'Lookup table on the types of water points, e.g. Drinking trough.';
 COMMENT ON COLUMN water_point_type.id is 'The unique water point type ID. Primary Key.';
 COMMENT ON COLUMN water_point_type.uuid is 'The unique user ID.';
 COMMENT ON COLUMN water_point_type.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
@@ -303,7 +303,7 @@ COMMENT ON COLUMN water_point_type.last_update_by is 'The name of the user respo
 COMMENT ON COLUMN water_point_type.name is 'The name of the water point type.';
 COMMENT ON COLUMN water_point_type.notes is 'Additional information of the water point type.';
 COMMENT ON COLUMN water_point_type.image is 'Image of the water point type.';
-COMMENT ON COLUMN water_point_type.sort_order is 'Defines the pattern of how water point types are to be sorted.';
+COMMENT ON COLUMN water_point_type.sort_order is 'Defines the pattern of how water point type records are to be sorted.';
 
 
 -- WATER POINT 
@@ -320,7 +320,7 @@ CREATE TABLE water_point(
 		water_source_uuid UUID NOT NULL REFERENCES water_source(uuid),
 		water_point_type_uuid UUID NOT NULL REFERENCES water_point_type(uuid)
 );
-COMMENT ON TABLE water_point is 'Water point refers to the geolocated water site that is available for use.';
+COMMENT ON TABLE water_point is 'Water point refers to the geolocated water site that is available for use, e.g. Tap.';
 COMMENT ON COLUMN water_point.id is 'The unique water point ID. Primary Key.';
 COMMENT ON COLUMN water_point.uuid is 'The unique user ID.';
 COMMENT ON COLUMN water_point.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
@@ -328,7 +328,7 @@ COMMENT ON COLUMN water_point.last_update_by is 'The name of the user responsibl
 COMMENT ON COLUMN water_point.name is 'The name of the water point.';
 COMMENT ON COLUMN water_point.notes is 'Additional information of the water point.';
 COMMENT ON COLUMN water_point.image is 'Image of the water point.';
-COMMENT ON COLUMN water_point.sort_order is 'Defines the pattern of how water points are to be sorted.';
+COMMENT ON COLUMN water_point.sort_order is 'Defines the pattern of how water point records are to be sorted.';
 COMMENT ON COLUMN water_point.geometry is 'The coordinates of the water point. Follows EPSG: 4326.';
 
 
@@ -350,7 +350,7 @@ CREATE TABLE water_line_type (
 		-- Unique together
 		UNIQUE(pipe_length_m, pipe_diameter_m)
 );
-COMMENT ON TABLE water_line_type IS 'Description of lines through which water flows.';
+COMMENT ON TABLE water_line_type IS 'Description of the type of line through which water flows, e.g. Water pipe.';
 COMMENT ON COLUMN water_line_type.id is 'The unique water line type ID. Primary Key.';
 COMMENT ON COLUMN water_line_type.uuid is 'The unique user ID.';
 COMMENT ON COLUMN water_line_type.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
@@ -359,8 +359,8 @@ COMMENT ON COLUMN water_line_type.name is 'The name of the water line type.';
 COMMENT ON COLUMN water_line_type.notes is 'Additional information of the water line type.';
 COMMENT ON COLUMN water_line_type.image is 'Image of the water line type.';
 COMMENT ON COLUMN water_line_type.sort_order is 'Defines the pattern of how water line types are to be sorted.';
-COMMENT ON COLUMN water_line_type.pipe_length_m is 'The water line length in meters.';
-COMMENT ON COLUMN water_line_type.pipe_diameter_m is 'The water line diameter in meters.';
+COMMENT ON COLUMN water_line_type.pipe_length_m is 'The water line length measured in meters.';
+COMMENT ON COLUMN water_line_type.pipe_diameter_m is 'The water line diameter measured in meters.';
 
 
 -- WATER LINE
@@ -390,7 +390,7 @@ COMMENT ON COLUMN water_line.name is 'The name of the water line.';
 COMMENT ON COLUMN water_line.notes is 'Additional information of the water line path.';
 COMMENT ON COLUMN water_line.image is 'Image of the water line path.';
 COMMENT ON COLUMN water_line.sort_order is 'Defines the pattern of how water lines are to be sorted.';
-COMMENT ON COLUMN water_line.estimated_depth_m is 'The approximate depth of the water line in meters.';
+COMMENT ON COLUMN water_line.estimated_depth_m is 'The approximate depth of the water line measured in meters.';
 COMMENT ON COLUMN water_line.geometry is 'The location of the water line. Follows EPSG: 4326';
 
 
@@ -415,7 +415,7 @@ COMMENT ON COLUMN plant_growth_activity_type.last_update_by is 'The name of the 
 COMMENT ON COLUMN plant_growth_activity_type.name is 'The name of the plant growth activity type.';
 COMMENT ON COLUMN plant_growth_activity_type.notes is 'Additional information of the plant growth activity type.';
 COMMENT ON COLUMN plant_growth_activity_type.image is 'Image of the plant growth activity type.';
-COMMENT ON COLUMN plant_growth_activity_type.sort_order is 'Defines the pattern of how plant growth activity types are to be sorted.';
+COMMENT ON COLUMN plant_growth_activity_type.sort_order is 'Defines the pattern of how plant growth activity type records are to be sorted.';
 
 -- PLANT TYPE
 CREATE TABLE plant_type(
@@ -443,7 +443,7 @@ COMMENT ON COLUMN plant_type.last_update_by is 'The name of the user responsible
 COMMENT ON COLUMN plant_type.name is 'The name of the plant type.';
 COMMENT ON COLUMN plant_type.notes is 'Additional information of the plant type.';
 COMMENT ON COLUMN plant_type.image is 'Image of the plant type.';
-COMMENT ON COLUMN plant_type.sort_order is 'Defines the pattern of how plant types are to be sorted.';
+COMMENT ON COLUMN plant_type.sort_order is 'Defines the pattern of how plant type records are to be sorted.';
 COMMENT ON COLUMN plant_type.common_name IS 'Common name of the plant type e.g. Oaktree.';
 COMMENT ON COLUMN plant_type.scientific_name IS 'Scientific name of the plant type e.g. Quercus.';
 COMMENT ON COLUMN plant_type.plant_image IS 'Path to image of plant.';
@@ -464,7 +464,7 @@ CREATE TABLE month(
 		image TEXT,
         sort_order INT UNIQUE
 );
-COMMENT ON TABLE month IS 'Look up table for different months of the year, e.g. January, February etc';
+COMMENT ON TABLE month IS 'Look up table for different months of the year, e.g. January, February etc.';
 COMMENT ON COLUMN month.id IS 'The unique month ID. This is the Primary Key.';
 COMMENT ON COLUMN month.uuid is 'The unique user ID.';
 COMMENT ON COLUMN month.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
@@ -472,7 +472,7 @@ COMMENT ON COLUMN month.last_update_by is 'The name of the user responsible for 
 COMMENT ON COLUMN month.name is 'Name of the different months in the year e.g. January';
 COMMENT ON COLUMN month.notes is 'Additional information of the month.';
 COMMENT ON COLUMN month.image is 'Image of the object stored.';
-COMMENT ON COLUMN month.sort_order is 'Defines the pattern of how months are to be sorted.';
+COMMENT ON COLUMN month.sort_order is 'Defines the pattern of how month records are to be sorted.';
 
 
 -- PLANT USAGE
@@ -534,9 +534,9 @@ COMMENT ON COLUMN vegetation_point.last_update_by is 'The name of the user respo
 COMMENT ON COLUMN vegetation_point.name is 'The name of the vegetation point.';
 COMMENT ON COLUMN vegetation_point.notes is 'Additional information of the vegetation point.';
 COMMENT ON COLUMN vegetation_point.image is 'Image of the vegetation point.';
-COMMENT ON COLUMN vegetation_point.sort_order is 'Defines the pattern of how vegetation points are to be sorted.';
-COMMENT ON COLUMN vegetation_point.estimated_crown_radius_m IS 'Estimated radius of the plant''s crown in meters.';
-COMMENT ON COLUMN vegetation_point.estimated_height_m IS 'Estimated height of plant in meters.';
+COMMENT ON COLUMN vegetation_point.sort_order is 'Defines the pattern of how vegetation point records are to be sorted.';
+COMMENT ON COLUMN vegetation_point.estimated_crown_radius_m IS 'Estimated radius of the plant''s crown measured in meters.';
+COMMENT ON COLUMN vegetation_point.estimated_height_m IS 'Estimated height of plant measured in meters.';
 COMMENT ON COLUMN vegetation_point.estimated_planting_year IS 'The year the plant was planted. The year must be in the range of 0 to current year.';
 COMMENT ON COLUMN vegetation_point.geometry IS 'The coordinates of the vegetation point. Follows EPSG 4326.';
 
@@ -564,7 +564,7 @@ COMMENT ON COLUMN pruning_activity.last_update_by is 'The name of the user respo
 COMMENT ON COLUMN pruning_activity.name is 'The name of the pruning activity.';
 COMMENT ON COLUMN pruning_activity.notes is 'Additional information of the  pruning activity.';
 COMMENT ON COLUMN pruning_activity.image is 'Image of the  pruning activity.';
-COMMENT ON COLUMN pruning_activity.sort_order is 'Defines the pattern of how  pruning activities are to be sorted.';
+COMMENT ON COLUMN pruning_activity.sort_order is 'Defines the pattern of how  pruning activity records are to be sorted.';
 COMMENT ON COLUMN pruning_activity.date IS 'The date of the pruning activity (yyyy:mm:dd).';
 COMMENT ON COLUMN pruning_activity.before_image IS 'Path to image before the pruning activity was done.';
 COMMENT ON COLUMN pruning_activity.after_image IS 'Path to image after the pruning activity was done.';
@@ -592,9 +592,9 @@ COMMENT ON COLUMN harvest_activity.last_update_by is 'The name of the user respo
 COMMENT ON COLUMN harvest_activity.name is 'The name of the harvest activity.';
 COMMENT ON COLUMN harvest_activity.notes is 'Additional information of the harvest activity.';
 COMMENT ON COLUMN harvest_activity.image is 'Image of the harvest activity.';
-COMMENT ON COLUMN harvest_activity.sort_order is 'Defines the pattern of how harvest activities are to be sorted.';
+COMMENT ON COLUMN harvest_activity.sort_order is 'Defines the pattern of how harvest activity records are to be sorted.';
 COMMENT ON COLUMN harvest_activity.date IS 'The date of the harvest activity (yyyy:mm:dd).';
-COMMENT ON COLUMN harvest_activity.quantity_kg IS 'The quantity of harvest in kilograms.';
+COMMENT ON COLUMN harvest_activity.quantity_kg IS 'The quantity of harvest measured in kilograms.';
 
 
 -- ASSOCIATION TABLES
