@@ -427,7 +427,6 @@ CREATE TABLE plant_type(
 		notes TEXT, 
 		image TEXT,
         sort_order INT UNIQUE,
-		common_name TEXT UNIQUE NOT NULL,
 		scientific_name TEXT UNIQUE,
 		plant_image TEXT,
 		flower_image TEXT,
@@ -444,7 +443,6 @@ COMMENT ON COLUMN plant_type.name is 'The name of the plant type.';
 COMMENT ON COLUMN plant_type.notes is 'Additional information of the plant type.';
 COMMENT ON COLUMN plant_type.image is 'Image of the plant type.';
 COMMENT ON COLUMN plant_type.sort_order is 'Defines the pattern of how plant type records are to be sorted.';
-COMMENT ON COLUMN plant_type.common_name IS 'Common name of the plant type e.g. Oaktree.';
 COMMENT ON COLUMN plant_type.scientific_name IS 'Scientific name of the plant type e.g. Quercus.';
 COMMENT ON COLUMN plant_type.plant_image IS 'Path to image of plant.';
 COMMENT ON COLUMN plant_type.flower_image IS 'Path to image of flower.';
