@@ -342,6 +342,7 @@ CREATE TABLE water_line_type (
 		notes TEXT, 
 		image TEXT,
         sort_order INT UNIQUE,
+		material TEXT,
 		pipe_length_m FLOAT,
 		pipe_diameter_m FLOAT,
 		-- Pipe length & pipe diameter constraint (length, diameter > 0)
@@ -359,6 +360,7 @@ COMMENT ON COLUMN water_line_type.name is 'The name of the water line type.';
 COMMENT ON COLUMN water_line_type.notes is 'Additional information of the water line type.';
 COMMENT ON COLUMN water_line_type.image is 'Image of the water line type.';
 COMMENT ON COLUMN water_line_type.sort_order is 'Defines the pattern of how water line types are to be sorted.';
+COMMENT ON COLUMN water_line_type.material is 'The material that the pipe is made of.';
 COMMENT ON COLUMN water_line_type.pipe_length_m is 'The water line length measured in meters.';
 COMMENT ON COLUMN water_line_type.pipe_diameter_m is 'The water line diameter measured in meters.';
 
@@ -377,6 +379,7 @@ CREATE TABLE water_line(
 		--Estimated depth of water line (depth > 0)
 		CONSTRAINT estimated_depth_m check(
 			estimated_depth_m >= 0),
+		
 		geometry GEOMETRY(LINESTRING, 4326),
 		water_source_uuid UUID NOT NULL REFERENCES water_source(uuid),
 		water_line_type_uuid UUID NOT NULL REFERENCES water_line_type(uuid)
