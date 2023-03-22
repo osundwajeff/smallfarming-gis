@@ -62,4 +62,3 @@ INSERT INTO water_point_type (last_update_by, name) VALUES ('Polly', 'Water Tank
 -- water line type
 INSERT INTO water_line_type (last_update_by, name, sort_order) VALUES ('Polly', 'River', 1);
 INSERT INTO water_line_type (last_update_by, name, sort_order) VALUES ('Polly', 'Stream', 2);
-INSERT INTO water_line_type (last_update_by, name, sort_order) VALUES ('Polly', 'Drinking Trough', 3);
