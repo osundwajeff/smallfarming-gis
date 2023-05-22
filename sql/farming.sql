@@ -9,12 +9,12 @@ create extension postgis;
 -- INFRASTRUCTURE TYPE
 CREATE TABLE infrastructure_type (
     	id SERIAL NOT NULL PRIMARY KEY, 
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT
+	notes TEXT, 
+	image TEXT
 
 ); 
 COMMENT ON TABLE infrastructure_type IS 'Lookup table for the types of infrastructure available, e.g. Furniture .';
@@ -30,12 +30,12 @@ COMMENT ON COLUMN infrastructure_type.image is 'Image of the infrastructure type
 -- INFRASTRUCTURE ITEM
 CREATE TABLE infrastructure_item(
     	id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT NOT NULL, 
-		notes TEXT, 
-		image TEXT,
+	notes TEXT, 
+	image TEXT,
     	geometry GEOMETRY (POINT, 4326), 
     	infrastructure_type_uuid UUID NOT NULL REFERENCES infrastructure_type(uuid)
 );
@@ -53,12 +53,12 @@ COMMENT ON COLUMN infrastructure_item.geometry is 'The centroid location of the 
 -- INFRASTRUCTURE LOG ACTION
 CREATE TABLE infrastructure_log_action(
     	id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT
+	notes TEXT, 
+	image TEXT
 );
 COMMENT ON TABLE infrastructure_log_action IS 'Infrastructure log action refers to the actions taken to maintain infrastructure items, e.g. Screwing, Painting, Welding.';
 COMMENT ON COLUMN infrastructure_log_action.id is 'The unique log action ID. Primary Key.';
@@ -73,12 +73,12 @@ COMMENT ON COLUMN infrastructure_log_action.image is 'Image of the action taken.
 -- INFRASTRUCTURE MANAGEMENT LOG 
 CREATE TABLE infrastructure_management_log(
     	id SERIAL NOT NULL PRIMARY KEY, 
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT,
+	notes TEXT, 
+	image TEXT,
     	condition TEXT NOT NULL, 
     	infrastructure_item_uuid UUID NOT NULL REFERENCES infrastructure_item(uuid),
     	infrastructure_log_action_uuid UUID NOT NULL REFERENCES infrastructure_log_action (uuid)
@@ -97,19 +97,19 @@ COMMENT ON COLUMN infrastructure_management_log.condition is 'Circumstances or f
 ----------------------------------------ELECTRICITY-------------------------------------
 -- ELECTRICITY LINE TYPE
 CREATE TABLE electricity_line_type (
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT,
+	notes TEXT, 
+	image TEXT,
         sort_order INT UNIQUE,
-		-- Add unique together constraint for voltage and current
-		current_a FLOAT NOT NULL,
-		voltage_v FLOAT NOT NULL,
-		-- Unique together constraint for voltage and current
-		UNIQUE(current_a, voltage_v)
+	-- Add unique together constraint for voltage and current
+	current_a FLOAT NOT NULL,
+	voltage_v FLOAT NOT NULL,
+	-- Unique together constraint for voltage and current
+	UNIQUE(current_a, voltage_v)
 );
 COMMENT ON TABLE electricity_line_type IS 'Look up table for the types of electricity lines, e.g. Low-voltage line, High-voltage line etc.';
 COMMENT ON COLUMN electricity_line_type.id is 'The unique electricity line type ID. Primary key.';
@@ -126,14 +126,14 @@ COMMENT ON COLUMN electricity_line_type.voltage_v is 'The electricity line volta
 
 -- ELECTRICITY LINE
 CREATE TABLE electricity_line (
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
-		notes TEXT, 
-		image TEXT,
-		geometry GEOMETRY(LINESTRING, 4326) NOT NULL,
-		electricity_line_type_uuid UUID NOT NULL REFERENCES electricity_line_type(uuid)
+	notes TEXT, 
+	image TEXT,
+	geometry GEOMETRY(LINESTRING, 4326) NOT NULL,
+	electricity_line_type_uuid UUID NOT NULL REFERENCES electricity_line_type(uuid)
 );
 COMMENT ON TABLE electricity_line IS 'Electricity line refers to the geolocated wire or conductor used for transmitting or supplying electricity.';
 COMMENT ON COLUMN electricity_line.id is 'The unique electricity line ID. Primary key.';
@@ -147,13 +147,13 @@ COMMENT ON COLUMN electricity_line.geometry is 'The location of the electricity 
 
 -- ELECTRICITY LINE CONDITION
 CREATE TABLE electricity_line_condition_type (
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT,
+	notes TEXT, 
+	image TEXT,
         sort_order INT UNIQUE
 );
 COMMENT ON TABLE electricity_line_condition_type IS 'Look up table for the types of electricity line conditions, e.g. Working, Broken etc.';
@@ -170,18 +170,18 @@ COMMENT ON COLUMN electricity_line_condition_type.sort_order is 'Defines the pat
 -- ASSOCIATION TABLES
 -- ELECTRICITY LINE CONDITION
 CREATE TABLE electricity_line_conditions (
-	    uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL, 
-		notes TEXT, 
-		image TEXT,
-		date DATE NOT NULL,
-		electricity_line_uuid UUID NOT NULL REFERENCES electricity_line(uuid),
-		electricity_line_condition_uuid UUID NOT NULL REFERENCES electricity_line_condition_type(uuid),
-		-- Composite primary key
-		PRIMARY KEY (electricity_line_uuid, electricity_line_condition_uuid, date),
-		-- Unique together
-		UNIQUE(electricity_line_uuid, electricity_line_condition_uuid, date)
+	notes TEXT, 
+	image TEXT,
+	date DATE NOT NULL,
+	electricity_line_uuid UUID NOT NULL REFERENCES electricity_line(uuid),
+	electricity_line_condition_uuid UUID NOT NULL REFERENCES electricity_line_condition_type(uuid),
+	-- Composite primary key
+	PRIMARY KEY (electricity_line_uuid, electricity_line_condition_uuid, date),
+	-- Unique together
+	UNIQUE(electricity_line_uuid, electricity_line_condition_uuid, date)
 );
 COMMENT ON TABLE electricity_line_conditions IS 'Associative table which stores the electricity line and its condition on a particular day.';
 COMMENT ON COLUMN electricity_line_conditions.uuid is 'The unique user ID.';
@@ -195,13 +195,13 @@ COMMENT ON COLUMN electricity_line_conditions.date is 'The electricity line insp
 ----------------------------------------WATER-------------------------------------
 -- WATER SOURCE
 CREATE TABLE water_source(
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT
+	notes TEXT, 
+	image TEXT
 );
 COMMENT ON TABLE water_source IS 'Water source refers to the geolocated water bodies that provide drinking water, e.g. Aquifer.';
 COMMENT ON COLUMN water_source.id is 'The unique water source ID. This is the Primary Key.';
@@ -215,13 +215,13 @@ COMMENT ON COLUMN water_source.image is 'Image of the water body.';
 
 -- WATER POLYGON TYPE
 CREATE TABLE water_polygon_type(
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT
+	notes TEXT, 
+	image TEXT
 );
 COMMENT ON TABLE water_polygon_type IS 'Lookup table of the type of water polygon, e.g. Lake.';
 COMMENT ON COLUMN water_polygon_type.id is 'The unique water polygon ID. Primary Key.';
@@ -235,20 +235,20 @@ COMMENT ON COLUMN water_polygon_type.image is 'Image of the water polygon type.'
 
 -- WATER POLYGON
 CREATE TABLE water_polygon(
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT,
-		estimated_depth_m FLOAT,
-		-- 	Estimated depth of water polygon constraint (0m < Estimated Depth < 20m).
-		CONSTRAINT depth_check check(
-			estimated_depth_m >= 0 and estimated_depth_m <= 20),
-		geometry GEOMETRY(POLYGON, 4326),
-		water_source_uuid UUID NOT NULL REFERENCES water_source(uuid),
-		water_polygon_type_uuid UUID NOT NULL REFERENCES water_polygon_type(uuid)
+	notes TEXT, 
+	image TEXT,
+	estimated_depth_m FLOAT,
+	-- Estimated depth of water polygon constraint (0m < Estimated Depth < 20m).
+	CONSTRAINT depth_check check(
+	estimated_depth_m >= 0 and estimated_depth_m <= 20),
+	geometry GEOMETRY(POLYGON, 4326),
+	water_source_uuid UUID NOT NULL REFERENCES water_source(uuid),
+	water_polygon_type_uuid UUID NOT NULL REFERENCES water_polygon_type(uuid)
 );
 COMMENT ON TABLE water_polygon IS 'Water polygon refers to the geolocated land areas that are covered in water, either intermittently or constantly, e.g. River.';
 COMMENT ON COLUMN water_polygon.id is 'The unique water polygon ID. Primary Key.';
@@ -264,13 +264,13 @@ COMMENT ON COLUMN water_polygon.geometry is 'The location of the water polygon. 
 
 -- WATER POINT TYPE
 CREATE TABLE water_point_type (
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT
+	notes TEXT, 
+	image TEXT
 );
 COMMENT ON TABLE water_point_type is 'Lookup table on the types of water points, e.g. Drinking trough.';
 COMMENT ON COLUMN water_point_type.id is 'The unique water point type ID. Primary Key.';
@@ -283,15 +283,15 @@ COMMENT ON COLUMN water_point_type.image is 'Image of the water point type.';
 
 -- WATER POINT 
 CREATE TABLE water_point(
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
-		notes TEXT, 
-		image TEXT,
-		geometry GEOMETRY (POINT, 4326),
-		water_source_uuid UUID NOT NULL REFERENCES water_source(uuid),
-		water_point_type_uuid UUID NOT NULL REFERENCES water_point_type(uuid)
+	notes TEXT, 
+	image TEXT,
+	geometry GEOMETRY (POINT, 4326),
+	water_source_uuid UUID NOT NULL REFERENCES water_source(uuid),
+	water_point_type_uuid UUID NOT NULL REFERENCES water_point_type(uuid)
 );
 COMMENT ON TABLE water_point is 'Water point refers to the geolocated water site that is available for use, e.g. Tap.';
 COMMENT ON COLUMN water_point.id is 'The unique water point ID. Primary Key.';
@@ -305,21 +305,21 @@ COMMENT ON COLUMN water_point.geometry is 'The coordinates of the water point. F
 
 -- WATER LINE TYPE
 CREATE TABLE water_line_type (
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT,
+	notes TEXT, 
+	image TEXT,
         sort_order INT UNIQUE,
-		pipe_length_m FLOAT,
-		pipe_diameter_m FLOAT,
-		-- Pipe length & pipe diameter constraint (length, diameter > 0)
-		CONSTRAINT pipe_length_and_diameter_check check(
-			pipe_length_m >= 0 AND pipe_diameter_m >= 0),
-		-- Unique together
-		UNIQUE(pipe_length_m, pipe_diameter_m)
+	pipe_length_m FLOAT,
+	pipe_diameter_m FLOAT,
+	-- Pipe length & pipe diameter constraint (length, diameter > 0)
+	CONSTRAINT pipe_length_and_diameter_check check(
+	pipe_length_m >= 0 AND pipe_diameter_m >= 0),
+	-- Unique together
+	UNIQUE(pipe_length_m, pipe_diameter_m)
 );
 COMMENT ON TABLE water_line_type IS 'Description of the type of line through which water flows, e.g. Water pipe.';
 COMMENT ON COLUMN water_line_type.id is 'The unique water line type ID. Primary Key.';
@@ -336,19 +336,19 @@ COMMENT ON COLUMN water_line_type.pipe_diameter_m is 'The water line diameter me
 
 -- WATER LINE
 CREATE TABLE water_line(
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
-		notes TEXT, 
-		image TEXT,
-		estimated_depth_m FLOAT,
-		--Estimated depth of water line (depth > 0)
-		CONSTRAINT estimated_depth_m check(
-			estimated_depth_m >= 0),
-		geometry GEOMETRY(LINESTRING, 4326),
-		water_source_uuid UUID NOT NULL REFERENCES water_source(uuid),
-		water_line_type_uuid UUID NOT NULL REFERENCES water_line_type(uuid)
+	notes TEXT, 
+	image TEXT,
+	estimated_depth_m FLOAT,
+	--Estimated depth of water line (depth > 0)
+	CONSTRAINT estimated_depth_m check(
+	estimated_depth_m >= 0),
+	geometry GEOMETRY(LINESTRING, 4326),
+	water_source_uuid UUID NOT NULL REFERENCES water_source(uuid),
+	water_line_type_uuid UUID NOT NULL REFERENCES water_line_type(uuid)
 );
 COMMENT ON TABLE water_line is 'This is the geolocated path the water lines follow.';
 COMMENT ON COLUMN water_line.id is 'The unique water line ID. Primary Key.';
@@ -364,13 +364,13 @@ COMMENT ON COLUMN water_line.geometry is 'The location of the water line. Follow
 ----------------------------------------VEGETATION-------------------------------------
 -- PLANT GROWTH ACTIVITY TYPE
 CREATE TABLE plant_growth_activity_type (
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT,
+	notes TEXT, 
+	image TEXT,
         sort_order INT UNIQUE
 );
 COMMENT ON TABLE plant_growth_activity_type IS 'Plant growth activity type refers to the different growth stages of plants, e.g. Sprouting, Seeding etc.';
@@ -385,19 +385,19 @@ COMMENT ON COLUMN plant_growth_activity_type.sort_order is 'Defines the pattern 
 
 -- PLANT TYPE
 CREATE TABLE plant_type(
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT,
-		scientific_name TEXT UNIQUE,
-		plant_image TEXT,
-		flower_image TEXT,
-		fruit_image TEXT,
-		variety TEXT,
-		info_url TEXT
+	notes TEXT, 
+	image TEXT,
+	scientific_name TEXT UNIQUE,
+	plant_image TEXT,
+	flower_image TEXT,
+	fruit_image TEXT,
+	variety TEXT,
+	info_url TEXT
 );
 COMMENT ON TABLE plant_type IS 'Look up table of different types of plants, e.g. Oaktree.';
 COMMENT ON COLUMN plant_type.id IS 'The unique plant type ID. This is the Primary Key.';
@@ -417,13 +417,13 @@ COMMENT ON COLUMN plant_type.info_url IS 'URL link to more information about thi
 
 -- MONTH
 CREATE TABLE month(
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT,
+	notes TEXT, 
+	image TEXT,
         sort_order INT UNIQUE
 );
 COMMENT ON TABLE month IS 'Look up table for different months of the year, e.g. January, February etc.';
@@ -439,13 +439,13 @@ COMMENT ON COLUMN month.sort_order is 'Defines the pattern of how month records 
 
 -- PLANT USAGE
 CREATE TABLE plant_usage(
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT
+	notes TEXT, 
+	image TEXT
 );
 COMMENT ON TABLE plant_usage IS 'Look up table for different usages of the plants e.g. Food plant, Commercial plant etc.';
 COMMENT ON COLUMN plant_usage.id IS 'The unique plant usage ID. This is the Primary Key.';
@@ -459,29 +459,29 @@ COMMENT ON COLUMN plant_usage.image is 'Image of the plant stored.';
 
 -- VEGETATION POINT
 CREATE TABLE vegetation_point(
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
-		notes TEXT, 
-		image TEXT,
-		estimated_crown_radius_m FLOAT,
-		--Must be positive number
-		constraint radius_check check(
-			estimated_crown_radius_m >= 0),
-		--Takes 4 digits only
-		estimated_planting_year decimal(4,0),
-		--Must be before or equal this year
-		constraint year_check check(
-			estimated_planting_year >= 0),
-		constraint year_check2 check(
-			estimated_planting_year <= DATE_PART('Year', NOW())),
-		estimated_height_m FLOAT,
-		--Must be positive number
-		constraint height_check check(
-			estimated_height_m >= 0),
-		geometry GEOMETRY(POINT, 4326) NOT NULL, 
-		plant_type_uuid UUID NOT NULL REFERENCES plant_type(uuid)
+	notes TEXT, 
+	image TEXT,
+	estimated_crown_radius_m FLOAT,
+	--Must be positive number
+	constraint radius_check check(
+	estimated_crown_radius_m >= 0),
+	--Takes 4 digits only
+	estimated_planting_year decimal(4,0),
+	--Must be before or equal this year
+	constraint year_check check(
+	estimated_planting_year >= 0),
+	constraint year_check2 check(
+	estimated_planting_year <= DATE_PART('Year', NOW())),
+	estimated_height_m FLOAT,
+	--Must be positive number
+	constraint height_check check(
+	estimated_height_m >= 0),
+	geometry GEOMETRY(POINT, 4326) NOT NULL, 
+	plant_type_uuid UUID NOT NULL REFERENCES plant_type(uuid)
 );
 COMMENT ON TABLE vegetation_point IS 
 'Vegetation point refers a geolocated plant. Table stores the individual plant location and the properties.';
@@ -499,17 +499,17 @@ COMMENT ON COLUMN vegetation_point.geometry IS 'The coordinates of the vegetatio
 
 -- PRUNING ACTIVITY
 CREATE TABLE pruning_activity(
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT,
-		date DATE NOT NULL,
-		before_image TEXT,
-		after_image TEXT,
-		vegetation_point_uuid UUID NOT NULL REFERENCES vegetation_point(uuid)
+	notes TEXT, 
+	image TEXT,
+	date DATE NOT NULL,
+	before_image TEXT,
+	after_image TEXT,
+	vegetation_point_uuid UUID NOT NULL REFERENCES vegetation_point(uuid)
 );
 COMMENT ON TABLE pruning_activity IS 'Pruning activity refers to the trimming of unwanted parts of a plant.';
 COMMENT ON COLUMN pruning_activity.id IS 'The unique pruning activity ID. This is the Primary Key.';
@@ -526,16 +526,16 @@ COMMENT ON COLUMN pruning_activity.after_image IS 'Path to image after the pruni
 
 -- HARVEST ACTIVITY
 CREATE TABLE harvest_activity(
-		id SERIAL NOT NULL PRIMARY KEY,
-		uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+	id SERIAL NOT NULL PRIMARY KEY,
+	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     	last_update TIMESTAMP DEFAULT now() NOT NULL,
     	last_update_by TEXT NOT NULL,
         name TEXT UNIQUE NOT NULL, 
-		notes TEXT, 
-		image TEXT,
-		date DATE NOT NULL,
-		quantity_kg FLOAT,
-		vegetation_point_uuid UUID NOT NULL REFERENCES vegetation_point(uuid)
+	notes TEXT, 
+	image TEXT,
+	date DATE NOT NULL,
+	quantity_kg FLOAT,
+	vegetation_point_uuid UUID NOT NULL REFERENCES vegetation_point(uuid)
 );
 COMMENT ON TABLE harvest_activity IS 'Harvest activity refers to the gathering of ripe crop or fruits.';
 COMMENT ON COLUMN harvest_activity.id IS 'The unique harvest activity ID. This is the Primary Key.';
@@ -552,11 +552,11 @@ COMMENT ON COLUMN harvest_activity.quantity_kg IS 'The quantity of harvest measu
 -- ASSOCIATION TABLES
 -- PLANT GROWTH ACTIVITIES
 CREATE TABLE plant_growth_activities(
-		fk_plant_activity_uuid UUID  NOT NULL REFERENCES plant_growth_activity_type(uuid),
-		fk_plant_type_uuid UUID NOT NULL REFERENCES plant_type(uuid),
-		fk_month_uuid UUID  NOT NULL REFERENCES month(uuid),
-		-- 	Composite primary key using the three foreign keys above
-		PRIMARY KEY (fk_plant_activity_uuid, fk_plant_type_uuid, fk_month_uuid)
+	fk_plant_activity_uuid UUID  NOT NULL REFERENCES plant_growth_activity_type(uuid),
+	fk_plant_type_uuid UUID NOT NULL REFERENCES plant_type(uuid),
+	fk_month_uuid UUID  NOT NULL REFERENCES month(uuid),
+	-- Composite primary key using the three foreign keys above
+	PRIMARY KEY (fk_plant_activity_uuid, fk_plant_type_uuid, fk_month_uuid)
 );
 COMMENT ON TABLE plant_growth_activities IS 
 'Associative table to store the plant growth activities and plant types at different months in the year e.g. January_activity.';
@@ -566,9 +566,9 @@ COMMENT ON COLUMN plant_growth_activities.fk_month_uuid IS 'The foreign key link
 
 -- PLANT TYPE USAGES
 CREATE TABLE plant_type_usages(
-		fk_plant_usage_uuid UUID NOT NULL REFERENCES plant_usage(uuid),
-		fk_plant_type_uuid UUID NOT NULL REFERENCES plant_type(uuid),
-		PRIMARY KEY (fk_plant_usage_uuid, fk_plant_type_uuid)
+	fk_plant_usage_uuid UUID NOT NULL REFERENCES plant_usage(uuid),
+	fk_plant_type_uuid UUID NOT NULL REFERENCES plant_type(uuid),
+	PRIMARY KEY (fk_plant_usage_uuid, fk_plant_type_uuid)
 );
 COMMENT ON TABLE plant_type_usages IS 
 'Associative table to store the different plant usages and plant types ';
