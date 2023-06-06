@@ -1,5 +1,5 @@
 
-#NAMING CONVENTION
+# NAMING CONVENTION
 
 
 ***SQL*** statements and syntax should be ***upper case*** for example:
@@ -18,7 +18,7 @@ Lookup Table names should be in lower case, for example:
 
 ```electricity_line_condition``` not ```ElectricityLineCondition```
 
-#ADDITIONAL INFORMATION
+## ADDITIONAL INFORMATION
 
 - uuid, last_update and last_update_by the colour grey
 
