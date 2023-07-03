@@ -429,7 +429,7 @@ CREATE TABLE IF NOT EXISTS landuse_area_ownership
 	notes TEXT,
 	image TEXT,
 	owners_name TEXT,
-	owners_address TEXT,
+	owners_address TEXT
    
 );
 
