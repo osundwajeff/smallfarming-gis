@@ -209,7 +209,7 @@ COMMENT ON COLUMN building_conditions.building_uuid IS 'The foreign key referenc
 ---------------------------------------- FENCES -------------------------------------
 
 -- conditions
-CREATE TABLE IF NOT EXISTS condition_type (
+CREATE TABLE IF NOT EXISTS condition (
     id serial NOT NULL PRIMARY key,
     uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     last_update TIMESTAMP DEFAULT now() NOT NULL,
@@ -218,14 +218,14 @@ CREATE TABLE IF NOT EXISTS condition_type (
     notes TEXT,
     image TEXT
 );
-COMMENT ON TABLE condition_type  IS 'Look up table for condition types, e.g. good, bad.';
-COMMENT ON COLUMN condition_type.id IS 'The unique condition type item id. Primary key.';
-COMMENT ON COLUMN condition_type.uuid IS 'Globally Unique Identifier.';
-COMMENT ON COLUMN condition_type.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
-COMMENT ON COLUMN condition_type.last_update_by IS 'The name of the user responsible for the latest update.';
-COMMENT ON COLUMN condition_type.name IS 'The name of the condition type item.';
-COMMENT ON COLUMN condition_type.notes IS 'Additional information of the condition type item.';
-COMMENT ON COLUMN condition_type.image IS 'Image of the condition type item.';
+COMMENT ON TABLE condition  IS 'Look up table for condition, e.g. good, bad.';
+COMMENT ON COLUMN condition.id IS 'The unique condition item id. Primary key.';
+COMMENT ON COLUMN condition.uuid IS 'Global Unique Identifier.';
+COMMENT ON COLUMN condition.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
+COMMENT ON COLUMN condition.last_update_by IS 'The name of the user responsible for the latest update.';
+COMMENT ON COLUMN condition.name IS 'The name of the condition item.';
+COMMENT ON COLUMN condition.notes IS 'Additional information of the condition item.';
+COMMENT ON COLUMN condition.image IS 'Image of the condition item.';
 
 
 --Fence_type
@@ -241,7 +241,7 @@ CREATE TABLE IF NOT EXISTS fence_type (
 );
 COMMENT ON TABLE fence_type IS 'Look up table for fence types, e.g. electric, chain_link.';
 COMMENT ON COLUMN fence_type.id IS 'The unique fence type item id. Primary key.';
-COMMENT ON COLUMN fence_type.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN fence_type.uuid IS 'Global Unique Identifier.';
 COMMENT ON COLUMN fence_type.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN fence_type.last_update_by IS 'The name of the user responsible for the latest update.';
 COMMENT ON COLUMN fence_type.name IS 'The name of the fence type item.';
@@ -265,7 +265,7 @@ CREATE TABLE IF NOT EXISTS fence (
 );
 COMMENT ON TABLE fence IS 'The fence item refers to any geolocated line acting as boundary in the area, e.g. fence lines';
 COMMENT ON COLUMN fence.id IS 'The unique fence item id. Primary key.';
-COMMENT ON COLUMN fence.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN fence.uuid IS 'Global Unique Identifier.';
 COMMENT ON COLUMN fence.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN fence.last_update_by IS 'The name of the user responsible for the latest update.';
 COMMENT ON COLUMN fence.notes IS 'Additional information of the fence item.';
@@ -285,14 +285,14 @@ CREATE TABLE IF NOT EXISTS fence_conditions (
     image TEXT,
     DATE DATE NOT NULL,
     fence_uuid UUID NOT NULL REFERENCES fence(uuid),
-    condition_type_uuid UUID NOT NULL REFERENCES condition_type(uuid),
+    condition_uuid UUID NOT NULL REFERENCES condition(uuid),
     -- composite primary key
-    PRIMARY key (fence_uuid, condition_type_uuid, DATE),
+    PRIMARY key (fence_uuid, condition_uuid, DATE),
     -- unique together
-    UNIQUE(fence_uuid, condition_type_uuid, DATE)
+    UNIQUE(fence_uuid, condition_uuid, DATE)
 );
 COMMENT ON TABLE fence_conditions IS 'An Association table showing the fence conditions, e.g. good, bad.';
-COMMENT ON COLUMN fence_conditions.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN fence_conditions.uuid IS 'Global Unique Identifier.';
 COMMENT ON COLUMN fence_conditions.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN fence_conditions.last_update_by IS 'The name of the user responsible for the latest update.';
 COMMENT ON COLUMN fence_conditions.notes IS 'Additional information of the fence conditions item.';
@@ -312,7 +312,7 @@ CREATE TABLE IF NOT EXISTS point_of_interest_type (
 );
 COMMENT ON TABLE point_of_interest_type IS 'Look up tables for point of interest types, e.g. types of gates';
 COMMENT ON COLUMN point_of_interest_type.id IS 'The unique point of interest type item id. Primary key.';
-COMMENT ON COLUMN point_of_interest_type.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN point_of_interest_type.uuid IS 'Global Unique Identifier.';
 COMMENT ON COLUMN point_of_interest_type.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN point_of_interest_type.last_update_by IS 'The name of the user responsible for the latest update.';
 COMMENT ON COLUMN point_of_interest_type.name IS 'The name of the point of interest type.';
@@ -326,7 +326,7 @@ CREATE TABLE IF NOT EXISTS point_of_interest (
     uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     last_update TIMESTAMP DEFAULT now() NOT NULL,
     last_update_by TEXT NOT NULL,
-    name TEXT UNIQUE NOT NULL,
+    name TEXT,
     notes TEXT,
     image TEXT,
     height_m FLOAT,
@@ -337,7 +337,7 @@ CREATE TABLE IF NOT EXISTS point_of_interest (
 );
 COMMENT ON TABLE point_of_interest IS 'The point of interest item refers to any geolocated point features found in the area, e.g. gate, ruin.';
 COMMENT ON COLUMN point_of_interest.id IS 'The unique point of interest item id. Primary key.';
-COMMENT ON COLUMN point_of_interest.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN point_of_interest.uuid IS 'Global Unique Identifier.';
 COMMENT ON COLUMN point_of_interest.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN point_of_interest.last_update_by IS 'The name of the user responsible for the latest update.';
 COMMENT ON COLUMN point_of_interest.name IS 'The name of the point of interest item.';
@@ -358,19 +358,20 @@ CREATE TABLE IF NOT EXISTS point_of_interest_conditions (
     image TEXT,
     DATE DATE NOT NULL,
     point_of_interest_uuid UUID NOT NULL REFERENCES point_of_interest(uuid),
-    condition_type_uuid UUID NOT NULL REFERENCES condition_type(uuid),
+    condition_uuid UUID NOT NULL REFERENCES condition(uuid),
     -- composite primary key
-    PRIMARY key (point_of_interest_uuid, condition_type_uuid, DATE),
+    PRIMARY key (point_of_interest_uuid, condition_uuid, DATE),
     -- unique together
-    UNIQUE(point_of_interest_uuid, condition_type_uuid, DATE)
+    UNIQUE(point_of_interest_uuid, condition_uuid, DATE)
 );
 COMMENT ON TABLE point_of_interest_conditions IS 'An Association table for point of interest conditions, e.g. good, bad.';
-COMMENT ON COLUMN point_of_interest_conditions.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN point_of_interest_conditions.uuid IS 'Global Unique Identifier.';
 COMMENT ON COLUMN point_of_interest_conditions.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN point_of_interest_conditions.last_update_by IS 'The name of the user responsible for the latest update.';
 COMMENT ON COLUMN point_of_interest_conditions.notes IS 'Additional information of the point of interest conditions item.';
 COMMENT ON COLUMN point_of_interest_conditions.image IS 'Image of the point of interest conditions item.';
 COMMENT ON COLUMN point_of_interest_conditions."date" IS 'The points of interest inspection date.';
+
 
 ----------------------------------------LANDUSE AREA -------------------------------------
 
