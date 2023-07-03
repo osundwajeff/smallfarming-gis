@@ -385,7 +385,7 @@ CREATE TABLE IF NOT EXISTS landuse_area_type
     name VARCHAR UNIQUE NOT NULL,
 	notes TEXT,
 	image TEXT,
-    building_land_use_uuid UUID  NOT NULL REFERENCES building_land_use(uuid)
+    building_uuid UUID  NOT NULL REFERENCES building_(uuid)
 );
 
 COMMENT ON TABLE landuse_area_type is 'Lookup table for the landuse area type. Eg: Agricultural, residential, recreational, commercial, transportation etc';
@@ -396,7 +396,7 @@ COMMENT ON COLUMN landuse_area_type.last_update_by is 'The name of the user resp
 COMMENT ON COLUMN landuse_area_type.name is 'The landuse area type field name. This is unique.';
 COMMENT ON COLUMN landuse_area_type.notes is 'Additional information of the landuse area type.';
 COMMENT ON COLUMN landuse_area_type.image is 'Image of the landuse area type.';
-COMMENT ON COLUMN landuse_area_type.building_land_use_uuid is 'The foreign key which references the uuid from the building land use table.';
+COMMENT ON COLUMN landuse_area_type.building_uuid is 'The foreign key which references the uuid from the building  table.';
 
 
 --LANDUSE AREA OWNERSHIP--
