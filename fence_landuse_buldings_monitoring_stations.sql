@@ -466,7 +466,7 @@ CREATE TABLE IF NOT EXISTS landuse_area
 );
 
 
-COMMENT ON TABLE landuse_area is 'Lookup table for the landuse area. eg Public or Private';
+COMMENT ON TABLE landuse_area is 'Lookup table for the landuse area.';
 COMMENT ON COLUMN landuse_area.id is 'The unique landuse area ID. This is the Primary Key.';
 COMMENT ON COLUMN landuse_area.uuid is 'Globally Unique Identifier.';
 COMMENT ON COLUMN landuse_area.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
