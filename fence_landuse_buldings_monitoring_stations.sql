@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS monitoring_reading_unit (
 COMMENT ON TABLE monitoring_reading_unit IS 'Look up table for monitoring station reading unit';
 COMMENT ON COLUMN monitoring_reading_unit.id IS 'The unique monitoring reading unit type ID. This is the Primary Key.';
 COMMENT ON COLUMN monitoring_reading_unit.reading_unit_name IS 'The name is unique to the monitoring reading unit table.';
-COMMENT ON COLUMN monitoring_reading_unit.uuid IS 'The unique ID which contains numbers and alphabets and is generated randomly';
+COMMENT ON COLUMN monitoring_reading_unit.uuid IS 'Globally Unique Identifier.';
 
 
 -- EQUIPMENT SUPPLIER --
@@ -33,7 +33,7 @@ COMMENT ON COLUMN equipment_supplier.supplier_url IS 'The URL is unique to the m
 COMMENT ON COLUMN equipment_supplier.phone IS 'The phone is unique to the monitoring reading unit table.';
 COMMENT ON COLUMN equipment_supplier.notes IS 'Where we make comments and a description about the equipment_supplier.';
 COMMENT ON COLUMN equipment_supplier.supplier_logo IS 'Where the logo of the equipment_supplier is stored.';
-COMMENT ON COLUMN equipment_supplier.uuid IS 'The unique ID which contains numbers and alphabets and is generated randomly';
+COMMENT ON COLUMN equipment_supplier.uuid IS 'Globally Unique Identifier.';
 
 
 -- MONITORING EQUIPMENT TYPE --
@@ -54,8 +54,8 @@ COMMENT ON COLUMN monitoring_equipment_type.equipment_type_image IS 'The image l
 COMMENT ON COLUMN monitoring_equipment_type.notes IS 'Where we make comments and a description about the monitoring_equipment_type.';
 COMMENT ON COLUMN monitoring_equipment_type.model IS 'Where we make comments and a description about the monitoring_equipment_type.';
 COMMENT ON COLUMN monitoring_equipment_type.supplier_product_url IS 'The URL is unique to the monitoring_equipment_type.';
-COMMENT ON COLUMN monitoring_equipment_type.uuid IS 'The unique ID which contains numbers and alphabets and is generated randomly';
-COMMENT ON COLUMN monitoring_equipment_type.monitoring_equipment_type_uuid IS 'The unique ID which contains numbers and alphabets and is generated randomly';
+COMMENT ON COLUMN monitoring_equipment_type.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN monitoring_equipment_type.monitoring_equipment_type_uuid IS 'Globally Unique Identifier.';
 
 -- ASSOCIATION TABLE --
 -- MONITORING STATION --
@@ -81,9 +81,9 @@ COMMENT ON COLUMN monitoring_station.geometry IS 'The geometry of the building (
 COMMENT ON COLUMN monitoring_station.reading_value IS 'The reading value that the monitoring station will have';
 COMMENT ON COLUMN monitoring_station.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN monitoring_station.last_update_by IS 'The name of the person who updated the table last.';
-COMMENT ON COLUMN monitoring_station.uuid IS 'The unique ID which contains numbers and alphabets and is generated randomly';
-COMMENT ON COLUMN monitoring_station.monitoring_reading_unit_uuid IS 'The unique ID which contains numbers and alphabets and is generated randomly';
-COMMENT ON COLUMN monitoring_station.monitoring_equipment_type_uuid IS 'The unique ID which contains numbers and alphabets and is generated randomly';
+COMMENT ON COLUMN monitoring_station.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN monitoring_station.monitoring_reading_unit_uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN monitoring_station.monitoring_equipment_type_uuid IS 'Globally Unique Identifier.'
 
 
 
@@ -107,27 +107,8 @@ COMMENT ON COLUMN building_type.notes IS 'Where we make comments and a descripti
 COMMENT ON COLUMN building_type.image IS 'The image link associated with the building type.';
 COMMENT ON COLUMN building_type.last_update IS 'The timestamp shown for when the building type table has been updated.';
 COMMENT ON COLUMN building_type.last_update_by IS 'The name of the person who updated the table last.';
-COMMENT ON COLUMN building_type.uuid IS 'The unique id which contains numbers and alphabets and is generated randomly to identify the feature.';
+COMMENT ON COLUMN building_type.uuid IS 'Globally Unique Identifier.';
 
-
--- LAND USE BUILDINGS --
-CREATE TABLE IF NOT EXISTS building_land_use(
-   id SERIAL PRIMARY KEY,
-   name VARCHAR NOT NULL,
-   notes TEXT,
-   image TEXT,
-   last_update TIMESTAMP DEFAULT now() NOT NULL,
-   last_update_by TEXT NOT NULL,
-   uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid());
-
-COMMENT ON TABLE building_land_use IS 'Look up table for the land use types of buildings, e.g residential, commercial, etc.';
-COMMENT ON COLUMN building_land_use.id IS 'The unique building type ID. This is the Primary Key.';
-COMMENT ON COLUMN building_land_use.name IS 'The name is unique to the buildings table.';
-COMMENT ON COLUMN building_land_use.notes IS 'Where we make comments and a description about the building land use.';
-COMMENT ON COLUMN building_land_use.image IS 'The image link associated with the building type.';
-COMMENT ON COLUMN building_land_use.last_update IS 'The timestamp shown for when the building type table has been updated.';
-COMMENT ON COLUMN building_land_use.last_update_by IS 'The name of the person who updated the table last.';
-COMMENT ON COLUMN building_land_use.uuid IS 'The unique id which contains numbers and alphabets and is generated randomly to identify the feature.';
 
 -- BUILDINGS --
 CREATE TABLE IF NOT EXISTS building(
@@ -156,7 +137,7 @@ COMMENT ON COLUMN building.area_square_meter IS 'The area covered by the buildin
 COMMENT ON COLUMN building.height_meter IS 'The height of building which can be influenced by the shadow it casts over the nearby area depending on the position of the sun.';
 COMMENT ON COLUMN building.last_update IS 'The timestamp shown for when the table has been updated.';
 COMMENT ON COLUMN building.last_update_by IS 'The name of the person who upated the table last.';
-COMMENT ON COLUMN building.uuid IS 'The unique id which contains numbers and alphabets and is generated randomly.';
+COMMENT ON COLUMN building.uuid IS 'Globally Unique Identifier.';
 COMMENT ON COLUMN building.building_type_uuid IS 'The foreign key which references the uuid from the building type table.';
 COMMENT ON COLUMN building.building_land_use_uuid IS 'The foreign key which references the uuid from the building land use table';
 
@@ -178,7 +159,7 @@ COMMENT ON COLUMN building_material.notes IS 'Where we make comments and a descr
 COMMENT ON COLUMN building_material.image IS 'The image link associated with the building material.';
 COMMENT ON COLUMN building_material.last_update IS 'The timestamp shown for when the building material table has been updated.';
 COMMENT ON COLUMN building_material.last_update_by IS 'The name of the person who upated the table last.';
-COMMENT ON COLUMN building_material.uuid IS 'The unique id which contains numbers and alphabets and is generated randomly to identify the feature.';
+COMMENT ON COLUMN building_material.uuid IS 'Globally Unique Identifier.';
 
 -- BUILDING CONDITIONS --
 CREATE TABLE IF NOT EXISTS building_conditions_type(
@@ -197,7 +178,7 @@ COMMENT ON COLUMN building_conditions_type.notes IS 'Where we make comments and 
 COMMENT ON COLUMN building_conditions_type.image IS 'The image link associated with the building conditions type.';
 COMMENT ON COLUMN building_conditions_type.last_update IS 'The timestamp shown for when the building conditions type table has been updated.';
 COMMENT ON COLUMN building_conditions_type.last_update_by IS 'The name of the person who upated the table last.';
-COMMENT ON COLUMN building_conditions_type.uuid IS 'The unique id which contains numbers and alphabets and is generated randomly to identify the feature.';
+COMMENT ON COLUMN building_conditions_type.uuid IS 'Globally Unique Identifier.';
 
 -- LAND USE BUILDINGS --
 CREATE TABLE IF NOT EXISTS building_conditions( --should be conditions, to indicate association table
@@ -214,7 +195,7 @@ PRIMARY KEY (building_conditions_type_uuid, building_uuid,date), --composite key
 UNIQUE (building_conditions_type_uuid, building_uuid,date));
 
 COMMENT ON TABLE building_conditions IS 'An association table between building and building conditions type.';
-COMMENT ON COLUMN building_conditions.uuid IS 'The unique id which contains numbers and alphabets and is generated randomly.';
+COMMENT ON COLUMN building_conditions.uuid IS 'Globally Unique Identifier.';
 COMMENT ON COLUMN building_conditions.last_update IS 'The timestamp shown for when the table has been updated.';
 COMMENT ON COLUMN building_conditions.last_update_by IS 'The name of the person who upated the table last.';
 COMMENT ON COLUMN building_conditions.name IS 'The name is unique to the conditions of the building.';
