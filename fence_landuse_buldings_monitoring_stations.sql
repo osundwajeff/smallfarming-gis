@@ -425,21 +425,26 @@ CREATE TABLE IF NOT EXISTS landuse_area_ownership
     last_update TIMESTAMP DEFAULT now() NOT NULL,
     last_update_by TEXT NOT NULL,
     name VARCHAR UNIQUE NOT NULL,
-	owners_name TEXT,
-	owners_address TEXT,
+	name TEXT,
 	notes TEXT,
 	image TEXT,
-    building_land_use_uuid UUID  NOT NULL REFERENCES building_land_use(uuid)
+	owners_name TEXT,
+	owners_address TEXT,
+   
 );
 
-COMMENT ON TABLE landuse_area_ownership is 'Lookup table for the landuse area type. Eg: Agricultural, residential, recreational, commercial, transportation etc';
-COMMENT ON COLUMN landuse_area_ownership.id is 'The unique landuse area type ID. This is the Primary Key.';
+COMMENT ON TABLE landuse_area_ownership is 'Lookup table for the landuse area ownership. Eg: Public or private ';
+COMMENT ON COLUMN landuse_area_ownership.id is 'The unique landuse area ownership ID. This is the Primary Key.';
 COMMENT ON COLUMN landuse_area_ownership.uuid is 'Globally Unique Identifier.';
 COMMENT ON COLUMN landuse_area_ownership.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN landuse_area_ownership.last_update_by is 'The name of the user responsible for the latest update.';
-COMMENT ON COLUMN landuse_area_ownership.name is 'The landuse area type field name. This is unique.';
-COMMENT ON COLUMN landuse_area_ownership.notes is 'Additional information of the landuse area type.';
-COMMENT ON COLUMN landuse_area_ownership.image is 'Image of the landuse area type.';
+COMMENT ON COLUMN landuse_area_ownership.name is 'The landuse area ownership field name. This is unique.';
+COMMENT ON COLUMN landuse_area_ownership.notes is 'Additional information of the landuse area ownership.';
+COMMENT ON COLUMN landuse_area_ownership.image is 'Image of the landuse area ownership.';
+COMMENT ON COLUMN landuse_area_ownership.owners_name is 'Name of the owner of the landuse area.';
+COMMENT ON COLUMN landuse_area_ownership.owners_address is 'Address of the owner of the landuse area.';
+
+
 
 
 -- LANDUSE AREA --
