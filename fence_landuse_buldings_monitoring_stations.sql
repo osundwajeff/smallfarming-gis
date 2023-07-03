@@ -389,7 +389,7 @@ CREATE TABLE IF NOT EXISTS landuse_area_type
 
 COMMENT ON TABLE landuse_area_type is 'Lookup table for the landuse area type. Eg: Agricultural, residential, recreational, commercial, transportation etc';
 COMMENT ON COLUMN landuse_area_type.id is 'The unique landuse area type ID. This is the Primary Key.';
-COMMENT ON COLUMN landuse_area_type.uuid is 'Globally Unique Identifier.';
+COMMENT ON COLUMN landuse_area_type.uuid is 'Global Unique Identifier.';
 COMMENT ON COLUMN landuse_area_type.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN landuse_area_type.last_update_by is 'The name of the user responsible for the latest update.';
 COMMENT ON COLUMN landuse_area_type.name is 'The landuse area type field name. This is unique.';
@@ -416,7 +416,7 @@ CREATE TABLE IF NOT EXISTS landuse_area_ownership
 
 COMMENT ON TABLE landuse_area_ownership is 'Lookup table for the landuse area ownership. Eg: Public or private ';
 COMMENT ON COLUMN landuse_area_ownership.id is 'The unique landuse area ownership ID. This is the Primary Key.';
-COMMENT ON COLUMN landuse_area_ownership.uuid is 'Globally Unique Identifier.';
+COMMENT ON COLUMN landuse_area_ownership.uuid is 'Global Unique Identifier.';
 COMMENT ON COLUMN landuse_area_ownership.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN landuse_area_ownership.last_update_by is 'The name of the user responsible for the latest update.';
 COMMENT ON COLUMN landuse_area_ownership.name is 'The landuse area ownership field name. This is unique.';
@@ -449,7 +449,7 @@ CREATE TABLE IF NOT EXISTS landuse_area
 
 COMMENT ON TABLE landuse_area is 'Lookup table for the landuse area.';
 COMMENT ON COLUMN landuse_area.id is 'The unique landuse area ID. This is the Primary Key.';
-COMMENT ON COLUMN landuse_area.uuid is 'Globally Unique Identifier.';
+COMMENT ON COLUMN landuse_area.uuid is 'Global Unique Identifier.';
 COMMENT ON COLUMN landuse_area.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN landuse_area.last_update_by is 'The name of the user responsible for the latest update.';
 COMMENT ON COLUMN landuse_area.name is 'The landuse area name. This is unique.';
@@ -477,7 +477,7 @@ CREATE TABLE IF NOT EXISTS landuse_area_condition_type
 
 COMMENT ON TABLE landuse_area_condition_type is 'Lookup table for the landuse area condition type.eg Bare, Occupied, Work in Progress';
 COMMENT ON COLUMN landuse_area_condition_type.id is 'The unique landuse area condition type ID. This is the Primary Key.';
-COMMENT ON COLUMN landuse_area_condition_type.uuid is 'Globally Unique Identifier.';
+COMMENT ON COLUMN landuse_area_condition_type.uuid is 'Global Unique Identifier.';
 COMMENT ON COLUMN landuse_area_condition_type.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN landuse_area_condition_type.last_update_by is 'The name of the user responsible for the latest update.';
 COMMENT ON COLUMN landuse_area_condition_type.name is 'The landuse area condition type field name.';
@@ -505,7 +505,7 @@ CREATE TABLE IF NOT EXISTS landuse_area_conditions --indicating the association 
 
 
 COMMENT ON TABLE landuse_area_conditions is 'Association table for the landuse area and landuse area condition type.';
-COMMENT ON COLUMN landuse_area_conditions.uuid is 'Globally Unique Identifier.';
+COMMENT ON COLUMN landuse_area_conditions.uuid is 'Global Unique Identifier.';
 COMMENT ON COLUMN landuse_area_conditions.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN landuse_area_conditions.last_update_by is 'The name of the user responsible for the latest update.';
 COMMENT ON COLUMN landuse_area_conditions.name is 'The landuse area conditions name which is unique.';
