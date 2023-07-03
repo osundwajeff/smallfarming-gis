@@ -407,7 +407,6 @@ CREATE TABLE IF NOT EXISTS landuse_area_ownership
     last_update TIMESTAMP DEFAULT now() NOT NULL,
     last_update_by TEXT NOT NULL,
     name VARCHAR UNIQUE NOT NULL,
-	name TEXT,
 	notes TEXT,
 	image TEXT,
 	owners_name TEXT,
