@@ -123,8 +123,7 @@ CREATE TABLE IF NOT EXISTS building(
    last_update TIMESTAMP DEFAULT now() NOT NULL,
    last_update_by TEXT NOT NULL,
    uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
-   building_type_uuid UUID  NOT NULL REFERENCES building_type(uuid),
-   building_land_use_uuid UUID NOT NULL REFERENCES building_land_use(uuid));
+   building_type_uuid UUID  NOT NULL REFERENCES building_type(uuid));
 
 COMMENT ON TABLE building IS 'Look up table for the types of buildings available, e.g residential';
 COMMENT ON COLUMN building.id IS 'The unique building type ID. This is the Primary Key.';
@@ -139,7 +138,7 @@ COMMENT ON COLUMN building.last_update IS 'The timestamp shown for when the tabl
 COMMENT ON COLUMN building.last_update_by IS 'The name of the person who upated the table last.';
 COMMENT ON COLUMN building.uuid IS 'Globally Unique Identifier.';
 COMMENT ON COLUMN building.building_type_uuid IS 'The foreign key which references the uuid from the building type table.';
-COMMENT ON COLUMN building.building_land_use_uuid IS 'The foreign key which references the uuid from the building land use table';
+
 
 --BUILDING MATERIAL--
 CREATE TABLE IF NOT EXISTS building_material(
