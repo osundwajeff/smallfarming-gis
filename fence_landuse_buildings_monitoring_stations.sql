@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS monitoring_reading_unit (
 COMMENT ON TABLE monitoring_reading_unit IS 'Look up table for monitoring station reading unit';
 COMMENT ON COLUMN monitoring_reading_unit.id IS 'The unique monitoring reading unit type ID. This is the Primary Key.';
 COMMENT ON COLUMN monitoring_reading_unit.reading_unit_name IS 'The name is unique to the monitoring reading unit table.';
-COMMENT ON COLUMN monitoring_reading_unit.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN monitoring_reading_unit.uuid IS 'Global Unique Identifier.';
 
 
 -- EQUIPMENT SUPPLIER --
@@ -33,7 +33,7 @@ COMMENT ON COLUMN equipment_supplier.supplier_url IS 'The URL is unique to the m
 COMMENT ON COLUMN equipment_supplier.phone IS 'The phone is unique to the monitoring reading unit table.';
 COMMENT ON COLUMN equipment_supplier.notes IS 'Where we make comments and a description about the equipment_supplier.';
 COMMENT ON COLUMN equipment_supplier.supplier_logo IS 'Where the logo of the equipment_supplier is stored.';
-COMMENT ON COLUMN equipment_supplier.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN equipment_supplier.uuid IS 'Global Unique Identifier.';
 
 
 -- MONITORING EQUIPMENT TYPE --
@@ -54,7 +54,7 @@ COMMENT ON COLUMN monitoring_equipment_type.equipment_type_image IS 'The image l
 COMMENT ON COLUMN monitoring_equipment_type.notes IS 'Where we make comments and a description about the monitoring_equipment_type.';
 COMMENT ON COLUMN monitoring_equipment_type.model IS 'Where we make comments and a description about the monitoring_equipment_type.';
 COMMENT ON COLUMN monitoring_equipment_type.supplier_product_url IS 'The URL is unique to the monitoring_equipment_type.';
-COMMENT ON COLUMN monitoring_equipment_type.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN monitoring_equipment_type.uuid IS 'Global Unique Identifier.';
 COMMENT ON COLUMN monitoring_equipment_type.monitoring_equipment_type_uuid IS 'Globally Unique Identifier.';
 
 -- ASSOCIATION TABLE --
@@ -81,7 +81,7 @@ COMMENT ON COLUMN monitoring_station.geometry IS 'The geometry of the building (
 COMMENT ON COLUMN monitoring_station.reading_value IS 'The reading value that the monitoring station will have';
 COMMENT ON COLUMN monitoring_station.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN monitoring_station.last_update_by IS 'The name of the person who updated the table last.';
-COMMENT ON COLUMN monitoring_station.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN monitoring_station.uuid IS 'Global Unique Identifier.';
 COMMENT ON COLUMN monitoring_station.monitoring_reading_unit_uuid IS 'Globally Unique Identifier.';
 COMMENT ON COLUMN monitoring_station.monitoring_equipment_type_uuid IS 'Globally Unique Identifier.'
 
@@ -107,7 +107,7 @@ COMMENT ON COLUMN building_type.notes IS 'Where we make comments and a descripti
 COMMENT ON COLUMN building_type.image IS 'The image link associated with the building type.';
 COMMENT ON COLUMN building_type.last_update IS 'The timestamp shown for when the building type table has been updated.';
 COMMENT ON COLUMN building_type.last_update_by IS 'The name of the person who updated the table last.';
-COMMENT ON COLUMN building_type.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN building_type.uuid IS 'Global Unique Identifier.';
 
 
 -- BUILDINGS --
@@ -136,7 +136,7 @@ COMMENT ON COLUMN building.area_square_meter IS 'The area covered by the buildin
 COMMENT ON COLUMN building.height_meter IS 'The height of building which can be influenced by the shadow it casts over the nearby area depending on the position of the sun.';
 COMMENT ON COLUMN building.last_update IS 'The timestamp shown for when the table has been updated.';
 COMMENT ON COLUMN building.last_update_by IS 'The name of the person who upated the table last.';
-COMMENT ON COLUMN building.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN building.uuid IS 'Global Unique Identifier.';
 COMMENT ON COLUMN building.building_type_uuid IS 'The foreign key which references the uuid from the building type table.';
 
 
@@ -161,26 +161,7 @@ COMMENT ON COLUMN building_material.last_update_by IS 'The name of the person wh
 COMMENT ON COLUMN building_material.uuid IS 'Globally Unique Identifier.';
 
 -- BUILDING CONDITIONS --
-CREATE TABLE IF NOT EXISTS building_conditions_type(
-id serial PRIMARY KEY,
-name VARCHAR UNIQUE NOT NULL, --look up table names must be unique
-notes TEXT,
-image TEXT,
-last_update TIMESTAMP DEFAULT now()NOT NULL,
-last_update_by TEXT NOT NULL,
-uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid());
-
-COMMENT ON TABLE building_conditions_type IS 'Look up table for the types of buildings available and the condition its in.';
-COMMENT ON COLUMN building_conditions_type.id IS 'The unique building conditions type ID. This is the Primary Key.';
-COMMENT ON COLUMN building_conditions_type.name IS 'The name is unique to the buildings table since it is a look up table.';
-COMMENT ON COLUMN building_conditions_type.notes IS 'Where we make comments and a description about the building conditions type.';
-COMMENT ON COLUMN building_conditions_type.image IS 'The image link associated with the building conditions type.';
-COMMENT ON COLUMN building_conditions_type.last_update IS 'The timestamp shown for when the building conditions type table has been updated.';
-COMMENT ON COLUMN building_conditions_type.last_update_by IS 'The name of the person who upated the table last.';
-COMMENT ON COLUMN building_conditions_type.uuid IS 'Globally Unique Identifier.';
-
--- LAND USE BUILDINGS --
-CREATE TABLE IF NOT EXISTS building_conditions( --should be conditions, to indicate association table
+CREATE TABLE IF NOT EXISTS building_conditions( -- association table
 uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),	
 last_update TIMESTAMP DEFAULT now() NOT NULL,
 last_update_by TEXT NOT NULL,
@@ -188,21 +169,21 @@ name TEXT NOT NULL,
 notes TEXT,
 image TEXT,
 date DATE NOT NULL,	
-building_conditions_type_uuid UUID NOT NULL REFERENCES building_conditions_type(uuid),
 building_uuid UUID NOT NULL REFERENCES building(uuid),
-PRIMARY KEY (building_conditions_type_uuid, building_uuid,date), --composite keys
-UNIQUE (building_conditions_type_uuid, building_uuid,date));
+PRIMARY KEY (building_uuid, condition_uuid,date), --composite keys
+UNIQUE (building_uuid, condition_uuid,date));
 
 COMMENT ON TABLE building_conditions IS 'An association table between building and building conditions type.';
-COMMENT ON COLUMN building_conditions.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN building_conditions.uuid IS 'Global Unique Identifier.';
 COMMENT ON COLUMN building_conditions.last_update IS 'The timestamp shown for when the table has been updated.';
 COMMENT ON COLUMN building_conditions.last_update_by IS 'The name of the person who upated the table last.';
 COMMENT ON COLUMN building_conditions.name IS 'The name is unique to the conditions of the building.';
 COMMENT ON COLUMN building_conditions.notes IS 'Where we make comments and a description about the building conditions.';
 COMMENT ON COLUMN building_conditions.image IS 'The image link associated with the building conditions.';
 COMMENT ON COLUMN building_conditions.date IS 'The datetime alteration of the conditions. This is the Primary and Composite Key';
-COMMENT ON COLUMN building_conditions.building_conditions_type_uuid IS 'The foreign key which is referenced from the building conditions type table.';
-COMMENT ON COLUMN building_conditions.building_uuid IS 'The foreign key referenced from the building table.';
+COMMENT ON COLUMN building_conditions.building_uuid IS 'The composite key referenced from the building table.';
+COMMENT ON COLUMN building_conditions.condition_uuid IS 'The composite key referenced from the building table.';
+
 
 
 ---------------------------------------- FENCES -------------------------------------
@@ -225,6 +206,8 @@ COMMENT ON COLUMN condition.last_update_by IS 'The name of the user responsible 
 COMMENT ON COLUMN condition.name IS 'The name of the condition item.';
 COMMENT ON COLUMN condition.notes IS 'Additional information of the condition item.';
 COMMENT ON COLUMN condition.image IS 'Image of the condition item.';
+
+
 
 
 --Fence_type
