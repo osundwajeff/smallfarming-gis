@@ -384,7 +384,7 @@ CREATE TABLE IF NOT EXISTS landuse_area_type
     name VARCHAR UNIQUE NOT NULL,
 	notes TEXT,
 	image TEXT,
-    building_uuid UUID  NOT NULL REFERENCES building_(uuid)
+    building_uuid UUID  NOT NULL REFERENCES building(uuid)
 );
 
 COMMENT ON TABLE landuse_area_type is 'Lookup table for the landuse area type. Eg: Agricultural, residential, recreational, commercial, transportation etc';
