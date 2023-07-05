@@ -83,10 +83,27 @@ COMMENT ON COLUMN monitoring_station.last_update IS 'The date that the last upda
 COMMENT ON COLUMN monitoring_station.last_update_by IS 'The name of the person who updated the table last.';
 COMMENT ON COLUMN monitoring_station.uuid IS 'Global Unique Identifier.';
 COMMENT ON COLUMN monitoring_station.monitoring_reading_unit_uuid IS 'Globally Unique Identifier.';
-COMMENT ON COLUMN monitoring_station.monitoring_equipment_type_uuid IS 'Globally Unique Identifier.'
+COMMENT ON COLUMN monitoring_station.monitoring_equipment_type_uuid IS 'Globally Unique Identifier.';
 
-
-
+-----------------------------------------------------------------------------------------------------
+-- conditions
+CREATE TABLE IF NOT EXISTS condition (
+    id serial NOT NULL PRIMARY key,
+    uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+    last_update TIMESTAMP DEFAULT now() NOT NULL,
+    last_update_by TEXT NOT NULL,
+    name TEXT UNIQUE NOT NULL,
+    notes TEXT,
+    image TEXT
+);
+COMMENT ON TABLE condition  IS 'Look up table for condition, e.g. good, bad.';
+COMMENT ON COLUMN condition.id IS 'The unique condition item id. Primary key.';
+COMMENT ON COLUMN condition.uuid IS 'Global Unique Identifier.';
+COMMENT ON COLUMN condition.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
+COMMENT ON COLUMN condition.last_update_by IS 'The name of the user responsible for the latest update.';
+COMMENT ON COLUMN condition.name IS 'The name of the condition item.';
+COMMENT ON COLUMN condition.notes IS 'Additional information of the condition item.';
+COMMENT ON COLUMN condition.image IS 'Image of the condition item.';
 
 ---------------------------------------- LAND USE BUILDINGS -------------------------------------
 
@@ -170,6 +187,7 @@ notes TEXT,
 image TEXT,
 date DATE NOT NULL,	
 building_uuid UUID NOT NULL REFERENCES building(uuid),
+condition_uuid UUID NOT NULL REFERENCES condition(uuid),
 PRIMARY KEY (building_uuid, condition_uuid,date), --composite keys
 UNIQUE (building_uuid, condition_uuid,date));
 
@@ -187,27 +205,6 @@ COMMENT ON COLUMN building_conditions.condition_uuid IS 'The composite key refer
 
 
 ---------------------------------------- FENCES -------------------------------------
-
--- conditions
-CREATE TABLE IF NOT EXISTS condition (
-    id serial NOT NULL PRIMARY key,
-    uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
-    last_update TIMESTAMP DEFAULT now() NOT NULL,
-    last_update_by TEXT NOT NULL,
-    name TEXT UNIQUE NOT NULL,
-    notes TEXT,
-    image TEXT
-);
-COMMENT ON TABLE condition  IS 'Look up table for condition, e.g. good, bad.';
-COMMENT ON COLUMN condition.id IS 'The unique condition item id. Primary key.';
-COMMENT ON COLUMN condition.uuid IS 'Global Unique Identifier.';
-COMMENT ON COLUMN condition.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
-COMMENT ON COLUMN condition.last_update_by IS 'The name of the user responsible for the latest update.';
-COMMENT ON COLUMN condition.name IS 'The name of the condition item.';
-COMMENT ON COLUMN condition.notes IS 'Additional information of the condition item.';
-COMMENT ON COLUMN condition.image IS 'Image of the condition item.';
-
-
 
 
 --Fence_type
