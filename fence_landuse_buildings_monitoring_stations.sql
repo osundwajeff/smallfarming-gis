@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS equipment_supplier (
    uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid()
 );
 
+COMMENT ON TABLE equipment_supplier IS 'Look up table for equipment supplier e.g. store name 1, store name 2.';
 COMMENT ON COLUMN equipment_supplier.id IS 'The equipment_supplier ID. This is the Primary Key.';
 COMMENT ON COLUMN equipment_supplier.supplier_name IS 'The name is unique to the monitoring reading unit table.';
 COMMENT ON COLUMN equipment_supplier.supplier_url IS 'The URL is unique to the monitoring reading unit table.';
@@ -47,6 +48,7 @@ CREATE TABLE IF NOT EXISTS monitoring_equipment_type (
    monitoring_equipment_type_uuid UUID NOT NULL REFERENCES equipment_supplier (uuid)
 );
 
+COMMENT ON TABLE monitoring_equipment_type IS 'Look up table for monitoring equipment type, e.g. moisture_tester, penetrometers.';
 COMMENT ON COLUMN monitoring_equipment_type.id IS 'The monitoring_equipment_type ID. This is the Primary Key.';
 COMMENT ON COLUMN monitoring_equipment_type.equipment_type_name IS 'Where we make comments and a description about the monitoring_equipment_type.';
 COMMENT ON COLUMN monitoring_equipment_type.equipment_type_image IS 'The image link associated with the monitoring_equipment_type.';
@@ -72,11 +74,12 @@ CREATE TABLE IF NOT EXISTS monitoring_station (
    monitoring_equipment_type_uuid UUID NOT NULL REFERENCES monitoring_equipment_type (uuid)
 );
 
+COMMENT ON TABLE monitoring_station IS 'Look up table for monitoring station, e.g. station 1, station 2.';
 COMMENT ON COLUMN monitoring_station.id IS 'The monitoring_station ID. This is the Primary Key.';
 COMMENT ON COLUMN monitoring_station.equipment_name IS 'Where we make comments and a description about the equipment name.';
 COMMENT ON COLUMN monitoring_station.monitoring_station_image IS 'The image link associated with the monitoring_station_image.';
 COMMENT ON COLUMN monitoring_station.notes IS 'Where we make comments and a description about the monitoring_station.';
-COMMENT ON COLUMN monitoring_equipment_type.model IS 'Where we make comments and a description about the monitoring_equipment_type.';
+COMMENT ON COLUMN monitoring_station.model IS 'Where we make comments and a description about the monitoring_equipment_type.';
 COMMENT ON COLUMN monitoring_station.geometry IS 'The geometry of the building (point, line, or polygon) and the projection system used.';
 COMMENT ON COLUMN monitoring_station.reading_value IS 'The reading value that the monitoring station will have';
 COMMENT ON COLUMN monitoring_station.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
@@ -175,7 +178,7 @@ COMMENT ON COLUMN building_material.notes IS 'Where we make comments and a descr
 COMMENT ON COLUMN building_material.image IS 'The image link associated with the building material.';
 COMMENT ON COLUMN building_material.last_update IS 'The timestamp shown for when the building material table has been updated.';
 COMMENT ON COLUMN building_material.last_update_by IS 'The name of the person who upated the table last.';
-COMMENT ON COLUMN building_material.uuid IS 'Global Unique Identifier.';
+COMMENT ON COLUMN building_material.uuid IS 'Globally Unique Identifier.';
 
 -- BUILDING CONDITIONS --
 CREATE TABLE IF NOT EXISTS building_conditions( -- association table
