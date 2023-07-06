@@ -175,7 +175,7 @@ COMMENT ON COLUMN building_material.notes IS 'Where we make comments and a descr
 COMMENT ON COLUMN building_material.image IS 'The image link associated with the building material.';
 COMMENT ON COLUMN building_material.last_update IS 'The timestamp shown for when the building material table has been updated.';
 COMMENT ON COLUMN building_material.last_update_by IS 'The name of the person who upated the table last.';
-COMMENT ON COLUMN building_material.uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN building_material.uuid IS 'Global Unique Identifier.';
 
 -- BUILDING CONDITIONS --
 CREATE TABLE IF NOT EXISTS building_conditions( -- association table
