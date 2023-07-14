@@ -168,8 +168,7 @@ notes TEXT,
 image TEXT,
 last_update TIMESTAMP DEFAULT now()NOT NULL,
 last_update_by TEXT NOT NULL,
-uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
-building_uuid UUID  NOT NULL REFERENCES building(uuid));
+uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid());
 
 COMMENT ON TABLE building_material IS 'Look up table for the types of building materials e.g. wood, concrete, aluminuim sheets etc.';
 COMMENT ON COLUMN building_material.id IS 'The unique building material type ID. This is the Primary Key.';
@@ -180,12 +179,35 @@ COMMENT ON COLUMN building_material.last_update IS 'The timestamp shown for when
 COMMENT ON COLUMN building_material.last_update_by IS 'The name of the person who upated the table last.';
 COMMENT ON COLUMN building_material.uuid IS 'Globally Unique Identifier.';
 
+-- BUILDING MATERIALS --
+CREATE TABLE IF NOT EXISTS building_conditions( -- association table
+uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),	
+last_update TIMESTAMP DEFAULT now() NOT NULL,
+last_update_by TEXT NOT NULL,
+notes TEXT,
+image TEXT,
+date DATE NOT NULL,	
+building_uuid UUID NOT NULL REFERENCES building(uuid),
+building_material_uuid UUID NOT NULL REFERENCES building_material(uuid),
+PRIMARY KEY (building_uuid, condition_uuid,date), --composite keys
+UNIQUE (building_uuid, building_material_uuid,date));
+
+COMMENT ON TABLE building_materials IS 'An association table between building and building material.';
+COMMENT ON COLUMN building_materials.uuid IS 'Global Unique Identifier.';
+COMMENT ON COLUMN building_materialss.last_update IS 'The timestamp shown for when the table has been updated.';
+COMMENT ON COLUMN building_materials.last_update_by IS 'The name of the person who upated the table last.';
+COMMENT ON COLUMN building_materials.notes IS 'Where we make comments and a description about the building materials.';
+COMMENT ON COLUMN building_materials.image IS 'The image link associated with the building materials.';
+COMMENT ON COLUMN building_materials.date IS 'The datetime alteration of the conditions. This is the Primary and Composite Key';
+COMMENT ON COLUMN building_materials.building_uuid IS 'The composite key referenced from the building table.';
+COMMENT ON COLUMN building_materials.building_material_uuid IS 'The composite key referenced from the building material table.';
+
+
 -- BUILDING CONDITIONS --
 CREATE TABLE IF NOT EXISTS building_conditions( -- association table
 uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),	
 last_update TIMESTAMP DEFAULT now() NOT NULL,
 last_update_by TEXT NOT NULL,
-name TEXT NOT NULL,
 notes TEXT,
 image TEXT,
 date DATE NOT NULL,	
@@ -198,7 +220,6 @@ COMMENT ON TABLE building_conditions IS 'An association table between building a
 COMMENT ON COLUMN building_conditions.uuid IS 'Global Unique Identifier.';
 COMMENT ON COLUMN building_conditions.last_update IS 'The timestamp shown for when the table has been updated.';
 COMMENT ON COLUMN building_conditions.last_update_by IS 'The name of the person who upated the table last.';
-COMMENT ON COLUMN building_conditions.name IS 'The name is unique to the conditions of the building.';
 COMMENT ON COLUMN building_conditions.notes IS 'Where we make comments and a description about the building conditions.';
 COMMENT ON COLUMN building_conditions.image IS 'The image link associated with the building conditions.';
 COMMENT ON COLUMN building_conditions.date IS 'The datetime alteration of the conditions. This is the Primary and Composite Key';
