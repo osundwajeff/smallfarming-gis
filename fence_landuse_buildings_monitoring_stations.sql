@@ -100,9 +100,9 @@ COMMENT ON COLUMN readings.name IS 'Where we make comments and a description abo
 COMMENT ON COLUMN readings.notes IS 'Additional information of the readings.';
 COMMENT ON COLUMN readings.equipment IS 'Equipment name used for the readings.  e.g. moisture_testers, penetrometers';
 COMMENT ON COLUMN readings.geometry IS 'The location of the monitoring station. Follows EPSG: 4326.';
-COMMENT ON COLUMN readings.soil_ph IS 'Additional information of the readings.';
-COMMENT ON COLUMN readings.soil_temperature IS 'Additional information of the readings.';
-COMMENT ON COLUMN readings.estimated_depth_m IS 'Additional information of the readings.';
+COMMENT ON COLUMN readings.soil_ph IS 'The soil ph measured in pH scale is from 0 (most acid) to 14 (most alkaline) and a pH of 7 is neutral.';
+COMMENT ON COLUMN readings.soil_temperature IS 'The soil temperature measured in degrees celcius.';
+COMMENT ON COLUMN readings.estimated_depth_m IS 'The estimated_depth length measured in meters.';
 
 -----------------------------------------------------------------------------------------------------
 -- CONDITIONS
