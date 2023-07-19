@@ -38,12 +38,16 @@ COMMENT ON COLUMN equipment_supplier.uuid IS 'Global Unique Identifier.';
 
 
 -- MONITORING EQUIPMENT TYPE --
-CREATE TABLE IF NOT EXISTS monitoring_equipment_type (
-   id SERIAL PRIMARY KEY,
-   equipment_type_name TEXT NOT NULL,
-   equipment_type_image TEXT,
+CREATE TABLE IF NOT EXISTS equipment_type (
+   id SERIAL NOT NULL PRIMARY KEY,
+   uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+   last_update TIMESTAMP DEFAULT now() NOT NULL,
+   last_update_by TEXT NOT NULL,
+   name TEXT NOT NULL,
+   url TEXT,
    notes TEXT,
-   supplier_product_url TEXT,
+   model TEXT,
+   manufacturer TEXT,
    uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
    monitoring_equipment_type_uuid UUID NOT NULL REFERENCES equipment_supplier (uuid)
 );
@@ -60,33 +64,26 @@ COMMENT ON COLUMN monitoring_equipment_type.monitoring_equipment_type_uuid IS 'G
 -- ASSOCIATION TABLE --
 -- MONITORING STATION --
 CREATE TABLE IF NOT EXISTS monitoring_station (
-   id SERIAL PRIMARY KEY,
+   id SERIAL NOT NULL PRIMARY KEY,
    uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
-   equipment_name TEXT,
-   monitoring_station_image TEXT,
-   model TEXT NOT NULL,
-   notes TEXT,
-   reading_value FLOAT NOT NULL,
-   geometry GEOMETRY (POINT, 4326) NOT NULL,
    last_update TIMESTAMP DEFAULT now() NOT NULL,
    last_update_by TEXT NOT NULL,
-   monitoring_reading_unit_uuid UUID NOT NULL REFERENCES monitoring_reading_unit (uuid),
-   monitoring_equipment_type_uuid UUID NOT NULL REFERENCES monitoring_equipment_type (uuid)
+   name TEXT NOT NULL,
+   image TEXT,
+   equipment TEXT NOT NULL,
+   geometry GEOMETRY (POINT, 4326) NOT NULL,
+   equipment_type_uuid UUID NOT NULL REFERENCES equipment_type(uuid)
 );
 
 COMMENT ON TABLE monitoring_station IS 'Look up table for monitoring station, e.g. station 1, station 2.';
 COMMENT ON COLUMN monitoring_station.id IS 'The monitoring_station ID. This is the Primary Key.';
-COMMENT ON COLUMN monitoring_station.equipment_name IS 'Where we make comments and a description about the equipment name.';
-COMMENT ON COLUMN monitoring_station.monitoring_station_image IS 'The image link associated with the monitoring_station_image.';
-COMMENT ON COLUMN monitoring_station.notes IS 'Where we make comments and a description about the monitoring_station.';
-COMMENT ON COLUMN monitoring_station.model IS 'Where we make comments and a description about the monitoring_equipment_type.';
-COMMENT ON COLUMN monitoring_station.geometry IS 'The geometry of the building (point, line, or polygon) and the projection system used.';
-COMMENT ON COLUMN monitoring_station.reading_value IS 'The reading value that the monitoring station will have';
+COMMENT ON COLUMN monitoring_station.uuid IS 'Global Unique Identifier.';
 COMMENT ON COLUMN monitoring_station.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN monitoring_station.last_update_by IS 'The name of the person who updated the table last.';
-COMMENT ON COLUMN monitoring_station.uuid IS 'Global Unique Identifier.';
-COMMENT ON COLUMN monitoring_station.monitoring_reading_unit_uuid IS 'Globally Unique Identifier.';
-COMMENT ON COLUMN monitoring_station.monitoring_equipment_type_uuid IS 'Globally Unique Identifier.';
+COMMENT ON COLUMN monitoring_station.name IS 'Where we make comments and a description about the equipment name.';
+COMMENT ON COLUMN monitoring_station.image IS 'The image link associated with the monitoring_station_image.';
+COMMENT ON COLUMN monitoring_station.geometry IS 'The location of the monitoring station. Follows EPSG: 4326.';
+COMMENT ON COLUMN monitoring_station.equipment_type_uuid IS 'Globally Unique Identifier.';
 
 -----------------------------------------------------------------------------------------------------
 -- CONDITIONS
