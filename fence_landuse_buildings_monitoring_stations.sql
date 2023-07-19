@@ -3,11 +3,14 @@
 
 ----------------------------------------MONITORING STATIONS-------------------------------------
 
--- MONITORING READING UNIT --
-CREATE TABLE IF NOT EXISTS monitoring_reading_unit (
-   id SERIAL PRIMARY KEY,
+-- READING UNIT --
+CREATE TABLE IF NOT EXISTS reading_unit (
+   id SERIAL NOT NULL PRIMARY KEY,
    uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
-   reading_unit_name TEXT NOT NULL
+   last_update TIMESTAMP DEFAULT now() NOT NULL,
+   last_update_by TEXT NOT NULL,
+   name TEXT NOT NULL,
+   abbreviation TEXT NOT NULL
 );
 
 COMMENT ON TABLE monitoring_reading_unit IS 'Look up table for monitoring station reading unit';
@@ -16,28 +19,7 @@ COMMENT ON COLUMN monitoring_reading_unit.reading_unit_name IS 'The name is uniq
 COMMENT ON COLUMN monitoring_reading_unit.uuid IS 'Global Unique Identifier.';
 
 
--- EQUIPMENT SUPPLIER --
-CREATE TABLE IF NOT EXISTS equipment_supplier (
-   id SERIAL PRIMARY KEY,
-   supplier_name TEXT,
-   supplier_url TEXT,
-   phone TEXT NOT NULL,
-   notes TEXT,
-   supplier_logo TEXT,
-   uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid()
-);
-
-COMMENT ON TABLE equipment_supplier IS 'Look up table for equipment supplier e.g. store name 1, store name 2.';
-COMMENT ON COLUMN equipment_supplier.id IS 'The equipment_supplier ID. This is the Primary Key.';
-COMMENT ON COLUMN equipment_supplier.supplier_name IS 'The name is unique to the monitoring reading unit table.';
-COMMENT ON COLUMN equipment_supplier.supplier_url IS 'The URL is unique to the monitoring reading unit table.';
-COMMENT ON COLUMN equipment_supplier.phone IS 'The phone is unique to the monitoring reading unit table.';
-COMMENT ON COLUMN equipment_supplier.notes IS 'Where we make comments and a description about the equipment_supplier.';
-COMMENT ON COLUMN equipment_supplier.supplier_logo IS 'Where the logo of the equipment_supplier is stored.';
-COMMENT ON COLUMN equipment_supplier.uuid IS 'Global Unique Identifier.';
-
-
--- MONITORING EQUIPMENT TYPE --
+-- EQUIPMENT TYPE --
 CREATE TABLE IF NOT EXISTS equipment_type (
    id SERIAL NOT NULL PRIMARY KEY,
    uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
@@ -48,18 +30,20 @@ CREATE TABLE IF NOT EXISTS equipment_type (
    notes TEXT,
    model TEXT,
    manufacturer TEXT,
-   uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
-   monitoring_equipment_type_uuid UUID NOT NULL REFERENCES equipment_supplier (uuid)
+   calibration_date TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
-COMMENT ON TABLE monitoring_equipment_type IS 'Look up table for monitoring equipment type, e.g. moisture_tester, penetrometers.';
-COMMENT ON COLUMN monitoring_equipment_type.id IS 'The monitoring_equipment_type ID. This is the Primary Key.';
-COMMENT ON COLUMN monitoring_equipment_type.equipment_type_name IS 'Where we make comments and a description about the monitoring_equipment_type.';
-COMMENT ON COLUMN monitoring_equipment_type.equipment_type_image IS 'The image link associated with the monitoring_equipment_type.';
-COMMENT ON COLUMN monitoring_equipment_type.notes IS 'Where we make comments and a description about the monitoring_equipment_type.';
-COMMENT ON COLUMN monitoring_equipment_type.supplier_product_url IS 'The URL is unique to the monitoring_equipment_type.';
-COMMENT ON COLUMN monitoring_equipment_type.uuid IS 'Global Unique Identifier.';
-COMMENT ON COLUMN monitoring_equipment_type.monitoring_equipment_type_uuid IS 'Globally Unique Identifier.';
+COMMENT ON TABLE equipment_type IS 'Look up table for equipment type, e.g. moisture tester, penetrometers.';
+COMMENT ON COLUMN equipment_type.id IS 'The equipment type ID. This is the Primary Key.';
+COMMENT ON COLUMN equipment_type.uuid IS 'Global Unique Identifier.';
+COMMENT ON COLUMN equipment_type.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
+COMMENT ON COLUMN equipment_type.last_update_by IS 'The name of the person who updated the table last.';
+COMMENT ON COLUMN equipment_type.name IS 'Where we make comments and a description about the equipment type.';
+COMMENT ON COLUMN equipment_type.url IS 'The URL is unique to the equipment type.';
+COMMENT ON COLUMN equipment_type.notes IS 'Additional information of the equipment type';
+COMMENT ON COLUMN equipment_type.model IS 'Where we make comments and a description about the equipment type.';
+COMMENT ON COLUMN equipment_type.manufacturer IS 'Information about the manufacturer that manufactured the equipment.';
+COMMENT ON COLUMN equipment_type.calibration_date IS 'The last date the equipment was calibrated.';
 
 -- ASSOCIATION TABLE --
 -- MONITORING STATION --
@@ -76,12 +60,12 @@ CREATE TABLE IF NOT EXISTS monitoring_station (
 );
 
 COMMENT ON TABLE monitoring_station IS 'Look up table for monitoring station, e.g. station 1, station 2.';
-COMMENT ON COLUMN monitoring_station.id IS 'The monitoring_station ID. This is the Primary Key.';
+COMMENT ON COLUMN monitoring_station.id IS 'The monitoring station ID. This is the Primary Key.';
 COMMENT ON COLUMN monitoring_station.uuid IS 'Global Unique Identifier.';
 COMMENT ON COLUMN monitoring_station.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN monitoring_station.last_update_by IS 'The name of the person who updated the table last.';
 COMMENT ON COLUMN monitoring_station.name IS 'Where we make comments and a description about the equipment name.';
-COMMENT ON COLUMN monitoring_station.image IS 'The image link associated with the monitoring_station_image.';
+COMMENT ON COLUMN monitoring_station.image IS 'The image link associated with the monitoring station image.';
 COMMENT ON COLUMN monitoring_station.geometry IS 'The location of the monitoring station. Follows EPSG: 4326.';
 COMMENT ON COLUMN monitoring_station.equipment_type_uuid IS 'Globally Unique Identifier.';
 
