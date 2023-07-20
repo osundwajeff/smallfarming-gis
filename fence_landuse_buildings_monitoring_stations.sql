@@ -494,7 +494,7 @@ CREATE TABLE IF NOT EXISTS landuse_area_condition_type(
 	notes TEXT,
 	image TEXT
 );
-COMMENT ON TABLE landuse_area_condition_type is 'Lookup table for the landuse area condition type.eg Bare, Occupied, Work in Progress';
+COMMENT ON TABLE landuse_area_condition_type is 'Lookup table for the landuse area condition type. e.g. Bare, Occupied, Work in Progress';
 COMMENT ON COLUMN landuse_area_condition_type.id is 'The unique landuse area condition type ID. This is the Primary Key.';
 COMMENT ON COLUMN landuse_area_condition_type.uuid is 'Global Unique Identifier.';
 COMMENT ON COLUMN landuse_area_condition_type.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
@@ -503,7 +503,7 @@ COMMENT ON COLUMN landuse_area_condition_type.name is 'The landuse area conditio
 COMMENT ON COLUMN landuse_area_condition_type.notes is 'Additional information of the landuse area condition type.';
 COMMENT ON COLUMN landuse_area_condition_type.image is 'Image of the landuse area condition type.';
 
--- ASSOCIATION TABLES
+-- ASSOCIATION TABLE
 -- LANDUSE AREA CONDITIONS
 CREATE TABLE IF NOT EXISTS landuse_area_conditions (
 	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
@@ -520,7 +520,7 @@ CREATE TABLE IF NOT EXISTS landuse_area_conditions (
 	-- Unique together
    	 UNIQUE (landuse_area_condition_type_uuid, landuse_area_uuid, date)
 );
-COMMENT ON TABLE landuse_area_conditions is 'Association table for the landuse area and landuse area condition type.';
+COMMENT ON TABLE landuse_area_conditions is 'Associative table to store the landuse area of different landuse area condition type.';
 COMMENT ON COLUMN landuse_area_conditions.uuid is 'Global Unique Identifier.';
 COMMENT ON COLUMN landuse_area_conditions.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
 COMMENT ON COLUMN landuse_area_conditions.last_update_by is 'The name of the user responsible for the latest update.';
@@ -528,5 +528,5 @@ COMMENT ON COLUMN landuse_area_conditions.name is 'The landuse area conditions n
 COMMENT ON COLUMN landuse_area_conditions.notes is 'Additional information of the landuse area conditions.';
 COMMENT ON COLUMN landuse_area_conditions.image is 'Image of the landuse area conditions.';
 COMMENT ON COLUMN landuse_area_conditions.date iS 'The datetime alteration of the conditions. This is the Primary and Composite Key';
-COMMENT ON COLUMN landuse_area_conditions.landuse_area_uuid is 'The foreign key which references the uuid from the landuse area table.';
-COMMENT ON COLUMN landuse_area_conditions.landuse_area_condition_type_uuid is 'The foreign key which references the uuid from the landuse area condition type table.';
+COMMENT ON COLUMN landuse_area_conditions.landuse_area_uuid is 'The foreign key linking to the landuse area table''s UUID.';
+COMMENT ON COLUMN landuse_area_conditions.landuse_area_condition_type_uuid is 'The foreign key linking to the landuse area condition type table''s UUID.';
