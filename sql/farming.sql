@@ -196,7 +196,7 @@ COMMENT ON COLUMN building_material.last_update_by IS 'The name of the person wh
 COMMENT ON COLUMN building_material.uuid IS 'Globally Unique Identifier.';
 
 -- BUILDING MATERIALS --
-CREATE TABLE IF NOT EXISTS building_conditions( -- association table
+CREATE TABLE IF NOT EXISTS building_materials( -- association table
 uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),	
 last_update TIMESTAMP DEFAULT now() NOT NULL,
 last_update_by TEXT NOT NULL,
@@ -205,7 +205,7 @@ image TEXT,
 date DATE NOT NULL,	
 building_uuid UUID NOT NULL REFERENCES building(uuid),
 building_material_uuid UUID NOT NULL REFERENCES building_material(uuid),
-PRIMARY KEY (building_uuid, condition_uuid,date), --composite keys
+PRIMARY KEY (building_uuid, building_material_uuid,date), --composite keys
 UNIQUE (building_uuid, building_material_uuid,date));
 
 COMMENT ON TABLE building_materials IS 'An association table between building and building material.';
