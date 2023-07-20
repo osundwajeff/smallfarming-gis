@@ -247,7 +247,7 @@ COMMENT ON COLUMN building_conditions.condition_uuid IS 'The composite key refer
 ---------------------------------------- FENCES -------------------------------------
 
 
---Fence_type
+-- FENCE TYPE
 CREATE TABLE IF NOT EXISTS fence_type (
     id serial NOT NULL PRIMARY key,
     uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
@@ -268,7 +268,7 @@ COMMENT ON COLUMN fence_type.notes IS 'Additional information of the fence type 
 COMMENT ON COLUMN fence_type.image IS 'Image of the fence type item.';
 
 
--- Fence Line
+-- FENCE LINE
 CREATE TABLE IF NOT EXISTS fence (
     id serial NOT NULL PRIMARY key,
     uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
@@ -294,8 +294,8 @@ COMMENT ON COLUMN fence.installation_date IS 'The date the fence was installed.'
 COMMENT ON COLUMN fence.is_date_estimated IS 'Is the fence item date of construction estimated?';
 COMMENT ON COLUMN fence.geometry IS 'The location of the fence line. Follows EPSG: 4326.';
 
--- association table
--- fence_condtions
+-- ASSOCIATION TABLE
+-- FENCE CONDITIONS
 CREATE TABLE IF NOT EXISTS fence_conditions (
     uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     last_update TIMESTAMP DEFAULT now() NOT NULL,
@@ -318,7 +318,7 @@ COMMENT ON COLUMN fence_conditions.notes IS 'Additional information of the fence
 COMMENT ON COLUMN fence_conditions.image IS 'Image of the fence conditions item.';
 COMMENT ON COLUMN fence_conditions."date" IS 'The date of the current conditions are marked as changed';
 
--- point_of_interest_type (point_of_interest_type)
+-- POINT OF INTEREST TYPE
 CREATE TABLE IF NOT EXISTS point_of_interest_type (
     id serial NOT NULL PRIMARY key,
     uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
@@ -339,7 +339,7 @@ COMMENT ON COLUMN point_of_interest_type.notes IS 'Additional information of the
 COMMENT ON COLUMN point_of_interest_type.image IS 'Image of the point of interest type.';
 COMMENT ON COLUMN point_of_interest_type.sort_order IS 'The pattern of how point of interest types are to be sorted.';
 
--- point_of_interest
+-- POINT OF INTEREST
 CREATE TABLE IF NOT EXISTS point_of_interest (
     id serial NOT NULL PRIMARY key,
     uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
@@ -367,8 +367,8 @@ COMMENT ON COLUMN point_of_interest.installation_date IS 'The date the point of 
 COMMENT ON COLUMN point_of_interest.is_date_estimated IS 'Is the point of interest date of construction estimated?';
 COMMENT ON COLUMN point_of_interest.geometry IS 'The centroid location of the point of interest item. Follows EPSG: 4326.';
 
--- association table
--- point_of_interest_conditions (point_of_interest_conditions)
+-- ASSOCIATION TABLE
+-- POINT OF INTEREST CONDITIONS
 CREATE TABLE IF NOT EXISTS point_of_interest_conditions (
     uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     last_update TIMESTAMP DEFAULT now() NOT NULL,
