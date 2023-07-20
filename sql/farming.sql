@@ -576,6 +576,7 @@ COMMENT ON COLUMN plant_type_usages.fk_plant_usage_uuid IS 'The foreign key link
 COMMENT ON COLUMN plant_type_usages.fk_plant_type_uuid IS 'The foreign key linking to plant type table''s UUID.';
 
 
+
 ----------------------------------------MONITORING STATIONS-------------------------------------
 
 -- READING UNIT
@@ -1105,3 +1106,4 @@ COMMENT ON COLUMN landuse_area_conditions.image is 'Image of the landuse area co
 COMMENT ON COLUMN landuse_area_conditions.date iS 'The datetime alteration of the conditions. This is the Primary and Composite Key';
 COMMENT ON COLUMN landuse_area_conditions.landuse_area_uuid is 'The foreign key linking to the landuse area table''s UUID.';
 COMMENT ON COLUMN landuse_area_conditions.landuse_area_condition_type_uuid is 'The foreign key linking to the landuse area condition type table''s UUID.';
+

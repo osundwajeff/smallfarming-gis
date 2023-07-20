@@ -63,6 +63,7 @@ INSERT INTO water_point_type (last_update_by, name) VALUES ('Polly', 'Water Tank
 INSERT INTO water_line_type (last_update_by, name, sort_order) VALUES ('Polly', 'River', 1);
 INSERT INTO water_line_type (last_update_by, name, sort_order) VALUES ('Polly', 'Stream', 2);
 
+
 -- readings
 INSERT INTO readings(last_update_by, name) VALUES ('Mondli', 'Moisture Testers');
 
@@ -88,3 +89,4 @@ INSERT INTO point_of_interest_type (last_update_by, name, sort_order) VALUES ('J
 -- condition
 INSERT INTO "condition"  (last_update_by, name) VALUES ('Jeff', 'Fixed');
 INSERT INTO "condition"  (last_update_by, name) VALUES ('Jeff', 'Broken');
+
