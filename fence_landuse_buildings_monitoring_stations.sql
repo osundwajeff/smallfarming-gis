@@ -396,17 +396,15 @@ COMMENT ON COLUMN point_of_interest_conditions."date" IS 'The points of interest
 ----------------------------------------LANDUSE AREA -------------------------------------
 
 -- LANDUSE AREA TYPE
-CREATE TABLE IF NOT EXISTS landuse_area_type
-(
-    id SERIAL NOT NULL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS landuse_area_type(
+    	id SERIAL NOT NULL PRIMARY KEY,
 	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
-    last_update TIMESTAMP DEFAULT now() NOT NULL,
-    last_update_by TEXT NOT NULL,
-    name VARCHAR UNIQUE NOT NULL,
+    	last_update TIMESTAMP DEFAULT now() NOT NULL,
+   	 last_update_by TEXT NOT NULL,
+   	 name VARCHAR UNIQUE NOT NULL,
 	notes TEXT,
 	image TEXT
 );
-
 COMMENT ON TABLE landuse_area_type is 'Lookup table for the landuse area type. Eg: Agriculture, residential, recreation, commercial, transportation etc';
 COMMENT ON COLUMN landuse_area_type.id is 'The unique landuse area type ID. This is the Primary Key.';
 COMMENT ON COLUMN landuse_area_type.uuid is 'Global Unique Identifier.';
@@ -417,18 +415,15 @@ COMMENT ON COLUMN landuse_area_type.notes is 'Additional information of the land
 COMMENT ON COLUMN landuse_area_type.image is 'Image of the landuse area type.';
 
 -- LANDUSE AREA OWNERSHIP TYPE
-CREATE TABLE IF NOT EXISTS landuse_area_ownership_type
-(
-    id SERIAL NOT NULL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS landuse_area_ownership_type(
+    	id SERIAL NOT NULL PRIMARY KEY,
 	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
-    last_update TIMESTAMP DEFAULT now() NOT NULL,
-    last_update_by TEXT NOT NULL,
-    name VARCHAR UNIQUE NOT NULL,
+    	last_update TIMESTAMP DEFAULT now() NOT NULL,
+   	last_update_by TEXT NOT NULL,
+    	name VARCHAR UNIQUE NOT NULL,
 	notes TEXT,
 	image TEXT
-
 );
-
 COMMENT ON TABLE landuse_area_ownership_type is 'Lookup table for the landuse area ownership type. Eg: Public or private ';
 COMMENT ON COLUMN landuse_area_ownership_type.id is 'The unique landuse area ownership type ID. This is the Primary Key.';
 COMMENT ON COLUMN landuse_area_ownership_type.uuid is 'Global Unique Identifier.';
@@ -440,19 +435,17 @@ COMMENT ON COLUMN landuse_area_ownership_type.image is 'Image of the landuse are
 
 
 -- LANDUSE AREA OWNER
-CREATE TABLE IF NOT EXISTS landuse_area_owner
-(
-    id SERIAL NOT NULL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS landuse_area_owner(
+    	id SERIAL NOT NULL PRIMARY KEY,
 	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
-    last_update TIMESTAMP DEFAULT now() NOT NULL,
-    last_update_by TEXT NOT NULL,
-    name VARCHAR UNIQUE,
+    	last_update TIMESTAMP DEFAULT now() NOT NULL,
+    	last_update_by TEXT NOT NULL,
+    	name VARCHAR UNIQUE,
 	notes TEXT,
 	image TEXT,
 	address TEXT,
 	landuse_area_ownership_type_uuid UUID  NOT NULL REFERENCES landuse_area_ownership_type(uuid)
 );
-
 COMMENT ON TABLE landuse_area_owner is 'Lookup table for the landuse area owner. ';
 COMMENT ON COLUMN landuse_area_owner.id is 'The unique landuse area owner ID. This is the Primary Key.';
 COMMENT ON COLUMN landuse_area_owner.uuid is 'Global Unique Identifier.';
@@ -466,22 +459,18 @@ COMMENT ON COLUMN landuse_area_owner.landuse_area_ownership_type_uuid is 'The fo
 
 
 -- LANDUSE AREA
-CREATE TABLE IF NOT EXISTS landuse_area
-(
-
-    id SERIAL NOT NULL PRIMARY KEY,
-    uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
-    last_update TIMESTAMP DEFAULT now() NOT NULL,
-    last_update_by TEXT NOT NULL,
-    name VARCHAR UNIQUE,
+CREATE TABLE IF NOT EXISTS landuse_area(
+    	id SERIAL NOT NULL PRIMARY KEY,
+    	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+    	last_update TIMESTAMP DEFAULT now() NOT NULL,
+   	last_update_by TEXT NOT NULL,
+   	 name VARCHAR UNIQUE,
 	notes TEXT,
 	image TEXT,
-    geometry GEOMETRY(POLYGON, 4326),
-    landuse_area_type_uuid UUID  NOT NULL REFERENCES landuse_area_type(uuid),
-    landuse_area_owner_uuid UUID  NOT NULL REFERENCES landuse_area_owner(uuid)
+    	geometry GEOMETRY(POLYGON, 4326),
+    	landuse_area_type_uuid UUID  NOT NULL REFERENCES landuse_area_type(uuid),
+    	landuse_area_owner_uuid UUID  NOT NULL REFERENCES landuse_area_owner(uuid)
 );
-
-
 COMMENT ON TABLE landuse_area is 'Lookup table for the landuse area.';
 COMMENT ON COLUMN landuse_area.id is 'The unique landuse area ID. This is the Primary Key.';
 COMMENT ON COLUMN landuse_area.uuid is 'Global Unique Identifier.';
@@ -496,19 +485,15 @@ COMMENT ON COLUMN landuse_area.landuse_area_owner_uuid is 'The foreign key which
 
 
 -- LANDUSE AREA CONDITION TYPE
-
-CREATE TABLE IF NOT EXISTS landuse_area_condition_type
-(
-    id SERIAL NOT NULL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS landuse_area_condition_type(
+   	id SERIAL NOT NULL PRIMARY KEY,
 	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
-    last_update TIMESTAMP DEFAULT now() NOT NULL,
-    last_update_by TEXT NOT NULL,
-    name VARCHAR UNIQUE NOT NULL, --lookup names must be unique
+    	last_update TIMESTAMP DEFAULT now() NOT NULL,
+   	last_update_by TEXT NOT NULL,
+    	name VARCHAR UNIQUE NOT NULL, --lookup names must be unique
 	notes TEXT,
 	image TEXT
 );
-
-
 COMMENT ON TABLE landuse_area_condition_type is 'Lookup table for the landuse area condition type.eg Bare, Occupied, Work in Progress';
 COMMENT ON COLUMN landuse_area_condition_type.id is 'The unique landuse area condition type ID. This is the Primary Key.';
 COMMENT ON COLUMN landuse_area_condition_type.uuid is 'Global Unique Identifier.';
@@ -518,25 +503,23 @@ COMMENT ON COLUMN landuse_area_condition_type.name is 'The landuse area conditio
 COMMENT ON COLUMN landuse_area_condition_type.notes is 'Additional information of the landuse area condition type.';
 COMMENT ON COLUMN landuse_area_condition_type.image is 'Image of the landuse area condition type.';
 
-
+-- ASSOCIATION TABLES
 -- LANDUSE AREA CONDITIONS
-
-CREATE TABLE IF NOT EXISTS landuse_area_conditions --indicating the association table
-(
+CREATE TABLE IF NOT EXISTS landuse_area_conditions (
 	uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
-    last_update TIMESTAMP DEFAULT now() NOT NULL,
-    last_update_by TEXT NOT NULL,
-    name VARCHAR UNIQUE,
+    	last_update TIMESTAMP DEFAULT now() NOT NULL,
+    	last_update_by TEXT NOT NULL,
+    	name VARCHAR UNIQUE,
 	notes TEXT,
 	image TEXT,
-    date DATE NOT NULL,
-    landuse_area_condition_type_uuid UUID NOT NULL REFERENCES landuse_area_condition_type(uuid),
-    landuse_area_uuid UUID NOT NULL REFERENCES landuse_area(uuid),
-    PRIMARY KEY (landuse_area_condition_type_uuid, landuse_area_uuid, date), --These are the composite keys
-    UNIQUE (landuse_area_condition_type_uuid, landuse_area_uuid, date)
+    	date DATE NOT NULL,
+    	landuse_area_condition_type_uuid UUID NOT NULL REFERENCES landuse_area_condition_type(uuid),
+    	landuse_area_uuid UUID NOT NULL REFERENCES landuse_area(uuid),
+	-- Composite primary key
+    	PRIMARY KEY (landuse_area_condition_type_uuid, landuse_area_uuid, date), 
+	-- Unique together
+   	 UNIQUE (landuse_area_condition_type_uuid, landuse_area_uuid, date)
 );
-
-
 COMMENT ON TABLE landuse_area_conditions is 'Association table for the landuse area and landuse area condition type.';
 COMMENT ON COLUMN landuse_area_conditions.uuid is 'Global Unique Identifier.';
 COMMENT ON COLUMN landuse_area_conditions.last_update is 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
