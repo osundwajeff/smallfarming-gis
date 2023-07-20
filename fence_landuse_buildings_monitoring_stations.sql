@@ -395,7 +395,7 @@ COMMENT ON COLUMN point_of_interest_conditions."date" IS 'The points of interest
 
 ----------------------------------------LANDUSE AREA -------------------------------------
 
--- LANDUSE AREA TYPE --
+-- LANDUSE AREA TYPE
 CREATE TABLE IF NOT EXISTS landuse_area_type
 (
     id SERIAL NOT NULL PRIMARY KEY,
@@ -416,7 +416,7 @@ COMMENT ON COLUMN landuse_area_type.name is 'The landuse area type field name. T
 COMMENT ON COLUMN landuse_area_type.notes is 'Additional information of the landuse area type.';
 COMMENT ON COLUMN landuse_area_type.image is 'Image of the landuse area type.';
 
---LANDUSE AREA OWNERSHIP TYPE--
+-- LANDUSE AREA OWNERSHIP TYPE
 CREATE TABLE IF NOT EXISTS landuse_area_ownership_type
 (
     id SERIAL NOT NULL PRIMARY KEY,
@@ -426,6 +426,7 @@ CREATE TABLE IF NOT EXISTS landuse_area_ownership_type
     name VARCHAR UNIQUE NOT NULL,
 	notes TEXT,
 	image TEXT
+
 );
 
 COMMENT ON TABLE landuse_area_ownership_type is 'Lookup table for the landuse area ownership type. Eg: Public or private ';
@@ -438,7 +439,7 @@ COMMENT ON COLUMN landuse_area_ownership_type.notes is 'Additional information o
 COMMENT ON COLUMN landuse_area_ownership_type.image is 'Image of the landuse area ownership type.';
 
 
---LANDUSE AREA OWNER--
+-- LANDUSE AREA OWNER
 CREATE TABLE IF NOT EXISTS landuse_area_owner
 (
     id SERIAL NOT NULL PRIMARY KEY,
@@ -464,7 +465,7 @@ COMMENT ON COLUMN landuse_area_owner.address is 'Address of the owner of the lan
 COMMENT ON COLUMN landuse_area_owner.landuse_area_ownership_type_uuid is 'The foreign key which references the uuid from the landuse area ownership type table.';
 
 
--- LANDUSE AREA --
+-- LANDUSE AREA
 CREATE TABLE IF NOT EXISTS landuse_area
 (
 
@@ -494,7 +495,7 @@ COMMENT ON COLUMN landuse_area.landuse_area_type_uuid is 'The foreign key which 
 COMMENT ON COLUMN landuse_area.landuse_area_owner_uuid is 'The foreign key which references the uuid from the landuse area owner table.';
 
 
--- LANDUSE AREA CONDITION TYPE --
+-- LANDUSE AREA CONDITION TYPE
 
 CREATE TABLE IF NOT EXISTS landuse_area_condition_type
 (
@@ -518,7 +519,7 @@ COMMENT ON COLUMN landuse_area_condition_type.notes is 'Additional information o
 COMMENT ON COLUMN landuse_area_condition_type.image is 'Image of the landuse area condition type.';
 
 
--- LANDUSE AREA CONDITIONS --
+-- LANDUSE AREA CONDITIONS
 
 CREATE TABLE IF NOT EXISTS landuse_area_conditions --indicating the association table
 (
