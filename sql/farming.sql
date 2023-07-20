@@ -210,7 +210,7 @@ UNIQUE (building_uuid, building_material_uuid,date));
 
 COMMENT ON TABLE building_materials IS 'An association table between building and building material.';
 COMMENT ON COLUMN building_materials.uuid IS 'Global Unique Identifier.';
-COMMENT ON COLUMN building_materialss.last_update IS 'The timestamp shown for when the table has been updated.';
+COMMENT ON COLUMN building_materials.last_update IS 'The timestamp shown for when the table has been updated.';
 COMMENT ON COLUMN building_materials.last_update_by IS 'The name of the person who upated the table last.';
 COMMENT ON COLUMN building_materials.notes IS 'Where we make comments and a description about the building materials.';
 COMMENT ON COLUMN building_materials.image IS 'The image link associated with the building materials.';
