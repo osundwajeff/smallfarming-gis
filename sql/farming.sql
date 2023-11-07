@@ -1107,3 +1107,157 @@ COMMENT ON COLUMN landuse_area_conditions.date iS 'The datetime alteration of th
 COMMENT ON COLUMN landuse_area_conditions.landuse_area_uuid is 'The foreign key linking to the landuse area table''s UUID.';
 COMMENT ON COLUMN landuse_area_conditions.landuse_area_condition_type_uuid is 'The foreign key linking to the landuse area condition type table''s UUID.';
 
+-- Poles: By Charles Mudima
+--CREATE EXTENSION IF NOT EXISTS postgis;
+
+CREATE TABLE IF NOT EXISTS pole_material (
+    id serial NOT NULL PRIMARY KEY ,
+    name TEXT UNIQUE NOT NULL ,
+    notes TEXT ,
+    image TEXT ,
+    last_update TIMESTAMP DEFAULT now() NOT NULL ,
+    last_update_by TEXT NOT NULL,
+    uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid()
+);
+
+COMMENT ON
+TABLE pole_material IS 'Lookup table for the different pole material available e.g steel, concrete';
+
+COMMENT ON
+COLUMN pole_material.id IS 'The unique pole material id. This is a primary key';
+
+COMMENT ON
+COLUMN pole_material.name IS 'The name of the pole material';
+
+COMMENT ON
+COLUMN pole_material.notes IS 'Any additional notes of the name of the pole material';
+
+COMMENT ON
+COLUMN pole_material.picture IS 'Any visual representation of the material';
+
+COMMENT ON 
+COLUMN pole_material.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
+
+COMMENT ON 
+COLUMN pole_material.last_update_by IS 'The name of the user responsible for the latest update.';
+
+COMMENT ON 
+COLUMN pole_material.uuid IS 'Global unique indetifier';
+
+CREATE TABLE IF NOT EXISTS pole_function(
+    id serial NOT NULL PRIMARY KEY,
+    FUNCTION TEXT NOT NULL,
+    notes TEXT,
+    image TEXT,
+    last_update timestamp DEFAULT now() NOT NULL,
+    last_update_by TEXT NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid()
+);
+
+COMMENT ON 
+TABLE pole_function IS 'Lookup table for the different pole function e.g telecommunincation pole';
+
+COMMENT ON
+COLUMN pole_function.id IS 'The unique pole material id. this is a primary key';
+
+COMMENT ON 
+COLUMN pole_function.function IS 'The possible function of a pole e.g street lighting pole or telecommunications pole';
+
+COMMENT ON 
+COLUMN pole_function.notes IS 'Any additional information on the pole functionality';
+
+COMMENT ON 
+COLUMN pole_function.picture IS 'Any visual representation of the pole function';
+
+COMMENT ON 
+COLUMN pole_function.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
+
+COMMENT ON
+COLUMN pole_function.last_update_by IS 'The name of the user responsible for the latest update.';
+
+COMMENT ON
+COLUMN pole_function.uuid IS 'Global unqie identifier';
+
+CREATE TABLE IF NOT EXISTS pole (
+    id serial NOT NULL PRIMARY KEY,
+    notes VARCHAR(255),
+    installation_date DATE DEFAULT now() NOT NULL,
+    geometry GEOMETRY(POINT,
+4326) NOT NULL,
+height FLOAT NOT NULL,
+    last_update TIMESTAMP NOT NULL,
+    last_update_by TEXT NOT NULL,
+    uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
+    pole_material_id INT NOT NULL,
+pole_function_id INT NOT NULL,
+    FOREIGN KEY (pole_material_id) REFERENCES pole_material(id),
+    FOREIGN KEY (pole_function_id) REFERENCES pole_function(id)
+    );
+
+COMMENT ON
+TABLE pole IS 'Pole table records any point entered as a pole e.g street pole';
+
+COMMENT ON 
+COLUMN pole.notes IS 'Anything unique or additional information about the pole';
+
+COMMENT ON
+COLUMN pole.installation_date IS 'The date and time when the pole was installed or created';
+
+COMMENT ON 
+COLUMN pole.height IS 'The height for the pole created';
+
+COMMENT ON
+COLUMN pole.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
+
+COMMENT ON
+COLUMN pole.last_update_by IS 'The name of the user responsible for the latest update.';
+
+COMMENT ON
+COLUMN pole.pole_material_id IS 'Foreign key pole material';
+
+COMMENT ON 
+COLUMN pole.pole_function_id IS 'Foreign key pole function';
+
+COMMENT ON
+COLUMN pole.uuid IS 'Global unique identifier';
+
+CREATE TABLE IF NOT EXISTS pole_conditions(
+    pole_uuid UUID NOT NULL,
+    condition_uuid UUID NOT NULL,
+    PRIMARY KEY (pole_uuid,
+condition_uuid,
+date),
+notes TEXT NOT NULL,
+    image TEXT,
+    date Date NOT NULL,
+    last_update TIMESTAMP DEFAULT now() NOT NULL,
+    last_update_by TEXT NOT NULL,
+    uuid uuid DEFAULT gen_random_uuid(),
+    FOREIGN KEY (pole_uuid) REFERENCES pole(uuid),
+    FOREIGN KEY (condition_uuid) REFERENCES CONDITION(uuid)
+);
+
+COMMENT ON 
+TABLE pole_conditions IS 'The table that records the state of a pole';
+
+COMMENT ON
+COLUMN pole_conditions.pole_uuid IS 'A foreign key which is used as composite primary key';
+
+COMMENT ON
+COLUMN pole_conditions.condition_uuid IS 'A foreign key which is used as composite primary key';
+
+COMMENT ON
+COLUMN pole_conditions.notes IS 'Any additional information on the condition of the pole';
+
+COMMENT ON
+COLUMN pole_conditions.date IS 'Stores the date that is used in the composite key';
+
+COMMENT ON
+COLUMN pole_conditions.last_update IS 'The date that the last update was made (yyyy-mm-dd hh:mm:ss).';
+
+COMMENT ON
+COLUMN pole_conditions.last_update_by IS 'The name of the user responsible for the latest update.';
+
+COMMENT ON
+COLUMN pole_conditions.uuid IS 'Global unique identifier';
+
