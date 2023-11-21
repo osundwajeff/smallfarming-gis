@@ -1149,7 +1149,7 @@ CREATE TABLE IF NOT EXISTS pole_function(
     FUNCTION TEXT NOT NULL,
     notes TEXT,
     image TEXT,
-    last_update timestamp DEFAULT now() NOT NULL,
+    last_update TIMESTAMP DEFAULT now() NOT NULL,
     last_update_by TEXT NOT NULL,
     uuid uuid DEFAULT gen_random_uuid()
 );
@@ -1185,7 +1185,7 @@ CREATE TABLE IF NOT EXISTS pole (
     geometry GEOMETRY(POINT,
 4326) NOT NULL,
 height FLOAT NOT NULL,
-    last_update TIMESTAMP NOT NULL,
+    last_update TIMESTAMP DEFAULT now() NOT NULL,
     last_update_by TEXT NOT NULL,
     uuid UUID UNIQUE NOT NULL DEFAULT gen_random_uuid(),
     pole_material_id INT NOT NULL,
