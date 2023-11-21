@@ -106,7 +106,7 @@ INSERT INTO pole_material (last_update_by, name) VALUES ('Charles', 'Concrete');
 INSERT INTO pole_function (id, last_update_by, "function") VALUES (1, 'Charles', 'Telecommunications');
 INSERT INTO pole_function (id, last_update_by, "function") VALUES (2, 'Charles', 'Electric');
 INSERT INTO pole_function (id, last_update_by, "function") VALUES (3, 'Charles', 'Flag');
-INSERT INTO pole_function (id, last_update_by, "function") VALUES (4, 'Charles', 'Street lighting`');
+INSERT INTO pole_function (id, last_update_by, "function") VALUES (4, 'Charles', 'Street lighting');
 
 -- pole_condition
 -- Having an error on pole_uuid and condition_uuid
