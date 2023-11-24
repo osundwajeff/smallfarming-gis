@@ -90,3 +90,26 @@ INSERT INTO point_of_interest_type (last_update_by, name, sort_order) VALUES ('J
 INSERT INTO "condition"  (last_update_by, name) VALUES ('Jeff', 'Fixed');
 INSERT INTO "condition"  (last_update_by, name) VALUES ('Jeff', 'Broken');
 
+-- pole 
+INSERT INTO pole (last_update, last_update_by, installation_date, geometry, height, pole_material_id, pole_function_id) VALUES ('2023-10-11','Charles', '2023-10-11',ST_GeomFromText('POINT(0 0)', 4326),20,1,1);
+INSERT INTO pole (last_update, last_update_by, installation_date, geometry, height, pole_material_id, pole_function_id) VALUES ('2023-10-11','Charles', '2023-10-11',ST_GeomFromText('POINT(0 0)', 4326),10,1,2);
+INSERT INTO pole (last_update, last_update_by, installation_date, geometry, height, pole_material_id, pole_function_id) VALUES ('2023-10-11','Charles', '2023-10-11',ST_GeomFromText('POINT(0 0)', 4326),70,1,3);
+INSERT INTO pole (last_update, last_update_by, installation_date, geometry, height, pole_material_id, pole_function_id) VALUES ('2023-10-11','Charles', '2023-10-11',ST_GeomFromText('POINT(0 0)', 4326),80,1,2);
+INSERT INTO pole (last_update, last_update_by, installation_date, geometry, height, pole_material_id, pole_function_id) VALUES ('2023-10-11','Charles', '2023-10-11',ST_GeomFromText('POINT(0 0)', 4326),20,1,2);
+
+-- pole_material 
+INSERT INTO pole_material (last_update_by, name) VALUES ('Charles', 'Metal');
+INSERT INTO pole_material (last_update_by, name) VALUES ('Charles', 'Wooden');
+INSERT INTO pole_material (last_update_by, name) VALUES ('Charles', 'Concrete');
+
+-- pole_function
+INSERT INTO pole_function (id, last_update_by, "function") VALUES (1, 'Charles', 'Telecommunications');
+INSERT INTO pole_function (id, last_update_by, "function") VALUES (2, 'Charles', 'Electric');
+INSERT INTO pole_function (id, last_update_by, "function") VALUES (3, 'Charles', 'Flag');
+INSERT INTO pole_function (id, last_update_by, "function") VALUES (4, 'Charles', 'Street lighting');
+
+-- pole_condition
+-- Having an error on pole_uuid and condition_uuid
+--INSERT INTO pole_conditions (last_update_by, notes, "date", pole_uuid) VALUES ('Charles', 'Good', '10/11/2023', c52c5d28-d1aa-4780-b560-3dde03773374); 
+
+
